@@ -230,12 +230,12 @@ const translations = {
     backToHome: 'Back to home',
     
     testimonials: [
-      { name: 'Anna K.', role: 'Copywriter', text: 'Was skeptical about "online income", but the plan really works. Got my first $150 order in 3 weeks', result: '+$450/mo' },
-      { name: 'Michael D.', role: 'Web Designer', text: 'Worked at a factory, wanted to change career. The plan showed me the way. Now I earn more working from home', result: '+$800/mo' },
-      { name: 'Elena V.', role: 'Virtual Assistant', text: 'Mom on maternity leave, looking for side income. Found my niche and now work 4 hours a day. Perfect!', result: '+$350/mo' },
-      { name: 'Dmitry S.', role: 'SMM Specialist', text: 'Thought freelancing was hard. Turns out, you just need a clear plan. Got first orders in a month', result: '+$550/mo' },
-      { name: 'Olga M.', role: 'Content Manager', text: 'Quit office job and no regrets. The plan gave structure and confidence. Now I choose who to work with', result: '+$620/mo' },
-      { name: 'Artem N.', role: 'Video Editor', text: 'Started as a hobby, now it\'s my main income. Most valuable — learned how to find clients', result: '+$900/mo' },
+      { name: 'Anna K.', role: 'Copywriter', text: 'Was skeptical about "online income", but the plan really works. Got my first $150 order in 3 weeks', result: '+$1,200/mo' },
+      { name: 'Michael D.', role: 'Web Designer', text: 'Worked at a factory, wanted to change career. The plan showed me the way. Now I earn more working from home', result: '+$2,400/mo' },
+      { name: 'Elena V.', role: 'Virtual Assistant', text: 'Mom on maternity leave, looking for side income. Found my niche and now work 4 hours a day. Perfect!', result: '+$950/mo' },
+      { name: 'Dmitry S.', role: 'SMM Specialist', text: 'Thought freelancing was hard. Turns out, you just need a clear plan. Got first orders in a month', result: '+$1,500/mo' },
+      { name: 'Olga M.', role: 'Content Manager', text: 'Quit office job and no regrets. The plan gave structure and confidence. Now I choose who to work with', result: '+$1,800/mo' },
+      { name: 'Artem N.', role: 'Video Editor', text: 'Started as a hobby, now it\'s my main income. Most valuable — learned how to find clients', result: '+$2,800/mo' },
     ]
   },
   

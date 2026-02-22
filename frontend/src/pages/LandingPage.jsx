@@ -193,7 +193,7 @@ const BenefitsSection = () => {
 
 // Testimonials Section with Auto-rotating Carousel
 const TestimonialsSection = () => {
-  // Большой пул отзывов
+  // Большой пул отзывов - 24 человека
   const allTestimonials = [
     {
       name: 'Анна К.',
@@ -278,6 +278,90 @@ const TestimonialsSection = () => {
       text: 'Начинал с текстов по 500₽. Сейчас минимальный заказ — 10,000₽. План научил ценить свою работу',
       image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face',
       result: '+75,000₽/мес'
+    },
+    {
+      name: 'Кристина Ж.',
+      role: 'UX-дизайнер',
+      text: 'Была менеджером в банке. За 2 месяца освоила новую профессию и вышла на удалёнку. Лучшее решение!',
+      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face',
+      result: '+95,000₽/мес'
+    },
+    {
+      name: 'Павел Г.',
+      role: 'Motion-дизайнер',
+      text: 'Делал видео для друзей бесплатно. Теперь это полноценный бизнес. План показал как продавать себя',
+      image: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&h=150&fit=crop&crop=face',
+      result: '+110,000₽/мес'
+    },
+    {
+      name: 'Диана С.',
+      role: 'Фотограф',
+      text: 'Снимала только для себя. Сейчас веду съёмки каждую неделю. План помог найти первых клиентов',
+      image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&h=150&fit=crop&crop=face',
+      result: '+65,000₽/мес'
+    },
+    {
+      name: 'Роман К.',
+      role: 'SEO-специалист',
+      text: 'Учился сам по YouTube. Но только план дал системный подход. Первый клиент — через 10 дней',
+      image: 'https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=150&h=150&fit=crop&crop=face',
+      result: '+85,000₽/мес'
+    },
+    {
+      name: 'Александра Н.',
+      role: 'Email-маркетолог',
+      text: 'Нишу подсказал план — email-маркетинг. Думала это сложно, оказалось — самое востребованное',
+      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face',
+      result: '+72,000₽/мес'
+    },
+    {
+      name: 'Владимир Ч.',
+      role: 'Продуктовый дизайнер',
+      text: 'Работал в офисе 5/2. Сейчас работаю когда хочу, зарабатываю в 2 раза больше. Свобода!',
+      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
+      result: '+130,000₽/мес'
+    },
+    {
+      name: 'Юлия Ф.',
+      role: 'Редактор',
+      text: 'Редактировала тексты на работе за 40к. Сейчас делаю то же самое удалённо за 90к. Почему не раньше?',
+      image: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=150&h=150&fit=crop&crop=face',
+      result: '+90,000₽/мес'
+    },
+    {
+      name: 'Андрей М.',
+      role: 'Консультант',
+      text: 'Эксперт в своей теме, но не знал как продавать знания. План показал как упаковать опыт',
+      image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=150&h=150&fit=crop&crop=face',
+      result: '+200,000₽/мес'
+    },
+    {
+      name: 'Татьяна Л.',
+      role: 'Бухгалтер на удалёнке',
+      text: 'Думала бухгалтерия — это только офис. Ошибалась! Теперь веду 5 компаний из дома',
+      image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=150&h=150&fit=crop&crop=face',
+      result: '+78,000₽/мес'
+    },
+    {
+      name: 'Максим В.',
+      role: '3D-визуализатор',
+      text: 'Архитектор по образованию. Ушёл в 3D на фриланс — доход вырос в 4 раза за полгода',
+      image: 'https://images.unsplash.com/photo-1548372290-8d01b6c8e78c?w=150&h=150&fit=crop&crop=face',
+      result: '+180,000₽/мес'
+    },
+    {
+      name: 'Евгения Р.',
+      role: 'Методолог онлайн-курсов',
+      text: 'Была учителем в школе. Нашла свою нишу — создание образовательных программ. Доход х5!',
+      image: 'https://images.unsplash.com/photo-1593104547489-5cfb3839a3b5?w=150&h=150&fit=crop&crop=face',
+      result: '+100,000₽/мес'
+    },
+    {
+      name: 'Денис П.',
+      role: 'Аналитик данных',
+      text: 'IT без программирования — это реально. План помог найти нишу аналитика. Очень благодарен!',
+      image: 'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=150&h=150&fit=crop&crop=face',
+      result: '+140,000₽/мес'
     }
   ];
 

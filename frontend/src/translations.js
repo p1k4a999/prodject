@@ -405,10 +405,10 @@ const translations = {
     // Creator
     creatorTag: 'Kto za tym stoi',
     creatorName: 'Alexander Petrov',
-    creatorBio: '5 lat we freelancingu. Przeszedł drogę od pierwszego zlecenia za 20zł do stabilnych 12,000zł/mies. Pomógł 2,400+ osobom zacząć zarabiać zdalnie.',
+    creatorBio: '5 lat we freelancingu. Przeszedł drogę od pierwszego zlecenia za 20zł do stabilnych $8,500/mies. Pomógł 2,400+ osobom zacząć zarabiać zdalnie.',
     creatorExp: '5 lat doświadczenia',
     creatorStudents: '2,400+ uczniów',
-    creatorIncome: '12K zł/mies',
+    creatorIncome: '$8,500/mies',
     
     // Form
     formTag: 'Następny krok',

@@ -15,13 +15,13 @@ const HeroSection = ({ scrollToForm }) => (
         {/* Left: Content */}
         <div className="order-2 lg:order-1">
           <span className="inline-block text-sm uppercase tracking-widest text-stone-500 mb-4 font-medium">
-            Пошаговый план для новичков
+            Пошаговая система для новичков
           </span>
           <h1 data-testid="hero-title" className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-stone-900 leading-tight mb-6">
             Как начать зарабатывать онлайн <span className="text-[#059669]">без опыта</span>
           </h1>
           <p className="text-lg md:text-xl text-stone-600 leading-relaxed mb-8 max-w-xl">
-            Реальная пошаговая схема для тех, кто хочет начать фриланс с нуля. Без "лёгких денег" — только работающие стратегии.
+            Получите личный план старта во фрилансе. Конкретные шаги, проверенные ниши, реальные стратегии поиска первых клиентов.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <button
@@ -29,26 +29,20 @@ const HeroSection = ({ scrollToForm }) => (
               onClick={scrollToForm}
               className="bg-[#064E3B] text-white hover:bg-[#064E3B]/90 rounded-full px-8 py-4 text-lg font-medium transition-all hover:scale-105 active:scale-95 shadow-lg shadow-emerald-900/20 flex items-center justify-center gap-2"
             >
-              Получить план
+              Получить пошаговый план
               <ArrowRight className="w-5 h-5" />
             </button>
-            <button
-              onClick={scrollToForm}
-              className="border-2 border-stone-300 text-stone-700 hover:bg-stone-100 rounded-full px-8 py-4 text-lg font-medium transition-all flex items-center justify-center gap-2"
-            >
-              Узнать больше
-              <ChevronDown className="w-5 h-5" />
-            </button>
           </div>
-          {/* Trust indicators */}
-          <div className="flex items-center gap-6 mt-10 pt-8 border-t border-stone-200">
+          {/* Micro-proof - Trust indicators */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mt-8 pt-6 border-t border-stone-200">
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
-                {[1,2,3,4].map(i => (
-                  <div key={i} className="w-8 h-8 rounded-full bg-stone-300 border-2 border-white" />
-                ))}
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=32&h=32&fit=crop&crop=face" className="w-8 h-8 rounded-full border-2 border-white object-cover" alt="" />
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face" className="w-8 h-8 rounded-full border-2 border-white object-cover" alt="" />
+                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face" className="w-8 h-8 rounded-full border-2 border-white object-cover" alt="" />
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face" className="w-8 h-8 rounded-full border-2 border-white object-cover" alt="" />
               </div>
-              <span className="text-stone-600 text-sm">2,400+ получили план</span>
+              <span className="text-stone-600 text-sm font-medium">2,400+ получили план</span>
             </div>
             <div className="flex items-center gap-1 text-amber-500">
               {[1,2,3,4,5].map(i => (
@@ -56,17 +50,17 @@ const HeroSection = ({ scrollToForm }) => (
                   <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
                 </svg>
               ))}
-              <span className="text-stone-600 text-sm ml-1">4.9</span>
+              <span className="text-stone-600 text-sm ml-1">4.9 рейтинг</span>
             </div>
           </div>
         </div>
-        {/* Right: Image */}
+        {/* Right: Image - человек за ноутбуком */}
         <div className="order-1 lg:order-2">
           <div className="relative">
             <div className="absolute -inset-4 bg-gradient-to-br from-emerald-100 to-amber-50 rounded-3xl -z-10" />
             <img
-              src="https://images.unsplash.com/photo-1755436613078-31ba993426d1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTZ8MHwxfHNlYXJjaHwxfHxwZXJzb24lMjB3b3JraW5nJTIwb24lMjBsYXB0b3AlMjBjb3p5JTIwaG9tZSUyMG9mZmljZSUyMG1pbmltYWxpc3R8ZW58MHx8fHwxNzcxNzc2NTc2fDA&ixlib=rb-4.1.0&q=85"
-              alt="Удалённая работа из дома"
+              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=600&fit=crop"
+              alt="Фрилансер работает удалённо"
               className="rounded-2xl shadow-2xl shadow-stone-300/50 w-full object-cover aspect-[4/3]"
             />
             {/* Floating card */}

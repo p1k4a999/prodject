@@ -31,9 +31,15 @@ const HeroSection = ({ scrollToForm }) => {
             <span className="inline-block text-sm uppercase tracking-widest text-stone-500 mb-4 font-medium">
               {t.heroTag}
             </span>
-            <h1 data-testid="hero-title" className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-stone-900 leading-tight mb-6">
+            <h1 data-testid="hero-title" className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-stone-900 leading-tight mb-4">
               {t.heroTitle} <span className="text-[#059669]">{t.heroTitleAccent}</span>
             </h1>
+            {/* Urgency/Result highlight */}
+            <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 mb-6 inline-block">
+              <p className="text-emerald-800 font-medium text-base md:text-lg">
+                {t.heroHighlight}
+              </p>
+            </div>
             <p className="text-lg md:text-xl text-stone-600 leading-relaxed mb-8 max-w-xl">
               {t.heroDescription}
             </p>

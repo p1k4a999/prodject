@@ -468,12 +468,12 @@ const translations = {
     backToHome: 'Wróć na stronę główną',
     
     testimonials: [
-      { name: 'Anna K.', role: 'Copywriter', text: 'Sceptycznie podchodziłam do "zarabiania online", ale plan naprawdę działa. Po 3 tygodniach dostałam pierwsze zlecenie', result: '+1,800zł/mies' },
-      { name: 'Michał D.', role: 'Web Designer', text: 'Pracowałem w fabryce, chciałem zmienić zawód. Plan pokazał mi kierunek', result: '+3,200zł/mies' },
-      { name: 'Elena W.', role: 'Wirtualna Asystentka', text: 'Mama na urlopie macierzyńskim. Znalazłam swój kierunek i pracuję 4 godz. dziennie', result: '+1,400zł/mies' },
-      { name: 'Damian S.', role: 'Specjalista SMM', text: 'Myślałem że freelancing jest trudny. Okazało się że potrzeba tylko planu', result: '+2,200zł/mies' },
-      { name: 'Olga M.', role: 'Content Manager', text: 'Rzuciłam biuro i nie żałuję. Plan dał strukturę i pewność siebie', result: '+2,500zł/mies' },
-      { name: 'Artur N.', role: 'Montażysta Wideo', text: 'Zacząłem jako hobby, teraz to główny dochód. Nauczyłem się szukać klientów', result: '+3,600zł/mies' },
+      { name: 'Anna K.', role: 'Copywriter', text: 'Sceptycznie podchodziłam do "zarabiania online", ale plan naprawdę działa. Po 3 tygodniach dostałam pierwsze zlecenie', result: '+$1,200/mies' },
+      { name: 'Michał D.', role: 'Web Designer', text: 'Pracowałem w fabryce, chciałem zmienić zawód. Plan pokazał mi kierunek', result: '+$2,400/mies' },
+      { name: 'Elena W.', role: 'Wirtualna Asystentka', text: 'Mama na urlopie macierzyńskim. Znalazłam swój kierunek i pracuję 4 godz. dziennie', result: '+$950/mies' },
+      { name: 'Damian S.', role: 'Specjalista SMM', text: 'Myślałem że freelancing jest trudny. Okazało się że potrzeba tylko planu', result: '+$1,500/mies' },
+      { name: 'Olga M.', role: 'Content Manager', text: 'Rzuciłam biuro i nie żałuję. Plan dał strukturę i pewność siebie', result: '+$1,800/mies' },
+      { name: 'Artur N.', role: 'Montażysta Wideo', text: 'Zacząłem jako hobby, teraz to główny dochód. Nauczyłem się szukać klientów', result: '+$2,800/mies' },
     ]
   },
   

@@ -191,7 +191,7 @@ const BenefitsSection = () => {
   );
 };
 
-// Testimonials Section
+// Testimonials Section with Auto-rotating Carousel
 const TestimonialsSection = () => {
   // Большой пул отзывов
   const allTestimonials = [
@@ -281,14 +281,31 @@ const TestimonialsSection = () => {
     }
   ];
 
-  // Случайная выборка 3 отзывов при каждом рендере
-  const [testimonials] = useState(() => {
-    const shuffled = [...allTestimonials].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 3);
-  });
+  const [currentSet, setCurrentSet] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  
+  // Разбиваем на группы по 3
+  const testimonialSets = [];
+  for (let i = 0; i < allTestimonials.length; i += 3) {
+    testimonialSets.push(allTestimonials.slice(i, i + 3));
+  }
+
+  // Автоматическая смена каждые 5 секунд
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setCurrentSet((prev) => (prev + 1) % testimonialSets.length);
+        setIsAnimating(false);
+      }, 300);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [testimonialSets.length]);
+
+  const currentTestimonials = testimonialSets[currentSet];
 
   return (
-    <section data-testid="testimonials-section" className="py-20 md:py-32 bg-stone-100">
+    <section data-testid="testimonials-section" className="py-20 md:py-32 bg-stone-100 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="text-center mb-16">
           <span className="text-sm uppercase tracking-widest text-stone-500 mb-4 block">Отзывы</span>
@@ -296,10 +313,16 @@ const TestimonialsSection = () => {
             Они уже <span className="text-[#059669]">начали зарабатывать</span>
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
+        
+        {/* Animated testimonials grid */}
+        <div 
+          className={`grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-300 ${
+            isAnimating ? 'opacity-0 transform translate-y-4' : 'opacity-100 transform translate-y-0'
+          }`}
+        >
+          {currentTestimonials.map((testimonial, index) => (
             <div
-              key={index}
+              key={`${currentSet}-${index}`}
               data-testid={`testimonial-card-${index}`}
               className="bg-white rounded-2xl border border-stone-100 p-8 hover:shadow-lg transition-shadow duration-300 flex flex-col"
             >
@@ -326,6 +349,29 @@ const TestimonialsSection = () => {
             </div>
           ))}
         </div>
+
+        {/* Pagination dots */}
+        <div className="flex justify-center gap-2 mt-8">
+          {testimonialSets.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setIsAnimating(true);
+                setTimeout(() => {
+                  setCurrentSet(index);
+                  setIsAnimating(false);
+                }, 300);
+              }}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentSet 
+                  ? 'bg-emerald-600 w-6' 
+                  : 'bg-stone-300 hover:bg-stone-400'
+              }`}
+              aria-label={`Показать отзывы ${index + 1}`}
+            />
+          ))}
+        </div>
+
         {/* Stats */}
         <div className="grid grid-cols-3 gap-6 mt-16 pt-16 border-t border-stone-200">
           <div className="text-center">

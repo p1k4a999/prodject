@@ -318,7 +318,7 @@ const TestimonialsSection = () => {
       name: 'Владимир Ч.',
       role: 'Продуктовый дизайнер',
       text: 'Работал в офисе 5/2. Сейчас работаю когда хочу, зарабатываю в 2 раза больше. Свобода!',
-      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
+      image: 'https://images.unsplash.com/photo-1528892952291-009c663ce843?w=150&h=150&fit=crop&crop=face',
       result: '+130,000₽/мес'
     },
     {

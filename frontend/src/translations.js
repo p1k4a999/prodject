@@ -366,6 +366,7 @@ const translations = {
     heroTag: 'System krok po kroku dla początkujących',
     heroTitle: 'Jak zacząć zarabiać online',
     heroTitleAccent: 'bez doświadczenia',
+    heroHighlight: '🚀 Pierwsze zlecenie już za 7–14 dni. Bez miesięcy szukania informacji.',
     heroDescription: 'Otrzymaj osobisty plan startu we freelancingu. Konkretne kroki, sprawdzone nisze, prawdziwe strategie znajdowania pierwszych klientów.',
     heroCta: 'Otrzymaj plan krok po kroku',
     heroProof: 'otrzymało plan',

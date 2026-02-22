@@ -126,6 +126,7 @@ const translations = {
     heroTag: 'Step-by-step system for beginners',
     heroTitle: 'How to start earning online',
     heroTitleAccent: 'with no experience',
+    heroHighlight: '🚀 Get your first order in 7–14 days. No months of searching for information.',
     heroDescription: 'Get your personal freelance start plan. Concrete steps, proven niches, real strategies for finding your first clients.',
     heroCta: 'Get step-by-step plan',
     heroProof: 'got the plan',

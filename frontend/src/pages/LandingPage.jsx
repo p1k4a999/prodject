@@ -256,7 +256,7 @@ const TestimonialsSection = () => {
             <p className="text-stone-500 mt-2">{t.statOrders}</p>
           </div>
           <div className="text-center">
-            <p className="font-heading text-4xl md:text-5xl font-bold text-stone-900">$470</p>
+            <p className="font-heading text-4xl md:text-5xl font-bold text-stone-900">$1,850</p>
             <p className="text-stone-500 mt-2">{t.statIncome}</p>
           </div>
         </div>

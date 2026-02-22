@@ -308,7 +308,7 @@ const LeadFormSection = ({ formRef }) => {
     setLoading(true);
     try {
       const response = await axios.post(`${API}/leads`, formData);
-      toast.success(response.data.message);
+      toast.success('Отлично! Переходим к оформлению...');
       // Store lead data for thank you page
       localStorage.setItem('leadData', JSON.stringify(response.data));
       navigate('/thank-you');
@@ -325,11 +325,11 @@ const LeadFormSection = ({ formRef }) => {
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
-            <span className="text-sm uppercase tracking-widest text-stone-500 mb-4 block">Бесплатно</span>
+            <span className="text-sm uppercase tracking-widest text-stone-500 mb-4 block">Начать сейчас</span>
             <h2 className="font-heading text-3xl md:text-4xl font-semibold text-stone-900 leading-tight mb-4">
-              Получите пошаговый план
+              Получите доступ к курсу
             </h2>
-            <p className="text-lg text-stone-600">Оставьте контакты и получите план старта во фрилансе</p>
+            <p className="text-lg text-stone-600">Оставьте контакты для оформления доступа к обучению</p>
           </div>
           
           <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-stone-200 shadow-lg p-8 md:p-10" data-testid="lead-form">
@@ -397,11 +397,11 @@ const LeadFormSection = ({ formRef }) => {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                     </svg>
-                    Отправляем...
+                    Оформляем...
                   </span>
                 ) : (
                   <>
-                    Получить план бесплатно
+                    Перейти к оформлению
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}

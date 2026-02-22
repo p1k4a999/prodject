@@ -193,12 +193,13 @@ const BenefitsSection = () => {
 
 // Testimonials Section
 const TestimonialsSection = () => {
-  const testimonials = [
+  // Большой пул отзывов
+  const allTestimonials = [
     {
       name: 'Анна К.',
       role: 'Копирайтер',
       text: 'Скептически относилась к "заработку в интернете", но план реально работает. Через 3 недели получила первый заказ на 15,000₽',
-      image: 'https://images.unsplash.com/photo-1589723710704-3d64c57ae972?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDN8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGZyZWVsYW5jZXIlMjB3b21hbiUyMHNtaWxpbmclMjBuYXR1cmFsJTIwbGlnaHR8ZW58MHx8fHwxNzcxNzc2NTc3fDA&ixlib=rb-4.1.0&q=85',
+      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face',
       result: '+45,000₽/мес'
     },
     {
@@ -212,10 +213,79 @@ const TestimonialsSection = () => {
       name: 'Елена В.',
       role: 'Виртуальный ассистент',
       text: 'Мама в декрете, искала подработку. Нашла своё направление и теперь работаю 4 часа в день. Идеально!',
-      image: 'https://images.unsplash.com/photo-1609521694362-43c2030111ba?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDN8MHwxfHNlYXJjaHwyfHxoYXBweSUyMGZyZWVsYW5jZXIlMjB3b21hbiUyMHNtaWxpbmclMjBuYXR1cmFsJTIwbGlnaHR8ZW58MHx8fHwxNzcxNzc2NTc7fDA&ixlib=rb-4.1.0&q=85',
+      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
       result: '+35,000₽/мес'
+    },
+    {
+      name: 'Дмитрий С.',
+      role: 'SMM-специалист',
+      text: 'Думал что фриланс — это сложно. Оказалось, нужен просто чёткий план. За месяц вышел на первые заказы',
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+      result: '+55,000₽/мес'
+    },
+    {
+      name: 'Ольга М.',
+      role: 'Контент-менеджер',
+      text: 'Уволилась с офиса и не пожалела. План дал структуру и уверенность. Теперь сама выбираю с кем работать',
+      image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face',
+      result: '+62,000₽/мес'
+    },
+    {
+      name: 'Артём Н.',
+      role: 'Видеомонтажёр',
+      text: 'Начал как хобби, теперь это основной доход. Самое ценное — понял как правильно искать клиентов',
+      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
+      result: '+90,000₽/мес'
+    },
+    {
+      name: 'Наталья П.',
+      role: 'Переводчик',
+      text: 'Знала английский, но не знала как монетизировать. План открыл глаза на возможности. Спасибо!',
+      image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop&crop=face',
+      result: '+70,000₽/мес'
+    },
+    {
+      name: 'Игорь Л.',
+      role: 'Таргетолог',
+      text: 'Прошёл кучу курсов, но только здесь получил реальные шаги. Через 2 недели — первый клиент',
+      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
+      result: '+120,000₽/мес'
+    },
+    {
+      name: 'Марина Т.',
+      role: 'Иллюстратор',
+      text: 'Рисовала для себя, теперь рисую за деньги. План помог выстроить позиционирование и найти нишу',
+      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face',
+      result: '+58,000₽/мес'
+    },
+    {
+      name: 'Алексей Р.',
+      role: 'Разработчик',
+      text: 'Работал в найме за копейки. Фриланс дал свободу и х3 к доходу. Жалею что не начал раньше',
+      image: 'https://images.unsplash.com/photo-1463453091185-61582044d556?w=150&h=150&fit=crop&crop=face',
+      result: '+150,000₽/мес'
+    },
+    {
+      name: 'Виктория К.',
+      role: 'Дизайнер презентаций',
+      text: 'Нашла узкую нишу благодаря плану. Конкуренции мало, заказов много. Очень довольна!',
+      image: 'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150&h=150&fit=crop&crop=face',
+      result: '+48,000₽/мес'
+    },
+    {
+      name: 'Сергей Б.',
+      role: 'Копирайтер',
+      text: 'Начинал с текстов по 500₽. Сейчас минимальный заказ — 10,000₽. План научил ценить свою работу',
+      image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face',
+      result: '+75,000₽/мес'
     }
   ];
+
+  // Случайная выборка 3 отзывов при каждом рендере
+  const [testimonials] = useState(() => {
+    const shuffled = [...allTestimonials].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 3);
+  });
 
   return (
     <section data-testid="testimonials-section" className="py-20 md:py-32 bg-stone-100">

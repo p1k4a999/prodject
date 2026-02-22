@@ -276,6 +276,47 @@ const TestimonialsSection = () => {
   );
 };
 
+// Creator/Author Section - Trust Block
+const CreatorSection = () => (
+  <section data-testid="creator-section" className="py-16 md:py-24">
+    <div className="max-w-7xl mx-auto px-6 md:px-12">
+      <div className="max-w-3xl mx-auto">
+        <div className="bg-white rounded-2xl border border-stone-200 p-8 md:p-10 flex flex-col md:flex-row items-center gap-8">
+          <div className="flex-shrink-0">
+            <img
+              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=face"
+              alt="Автор плана"
+              className="w-32 h-32 rounded-full object-cover border-4 border-emerald-100"
+            />
+          </div>
+          <div className="text-center md:text-left">
+            <span className="text-sm uppercase tracking-widest text-stone-500 mb-2 block">Кто стоит за планом</span>
+            <h3 className="font-heading text-2xl font-semibold text-stone-900 mb-3">Александр Петров</h3>
+            <p className="text-stone-600 leading-relaxed mb-4">
+              5 лет во фрилансе. Прошёл путь от первого заказа за 500₽ до стабильных 300,000₽/мес. 
+              Помог 2,400+ людям начать зарабатывать удалённо. Знаю все подводные камни и делюсь только проверенными методами.
+            </p>
+            <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-stone-500">
+              <span className="flex items-center gap-1">
+                <Check className="w-4 h-4 text-emerald-500" />
+                5 лет опыта
+              </span>
+              <span className="flex items-center gap-1">
+                <Check className="w-4 h-4 text-emerald-500" />
+                2,400+ учеников
+              </span>
+              <span className="flex items-center gap-1">
+                <Check className="w-4 h-4 text-emerald-500" />
+                300K₽/мес доход
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
 // Lead Form Section
 const LeadFormSection = ({ formRef }) => {
   const navigate = useNavigate();

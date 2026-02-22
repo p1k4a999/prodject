@@ -356,15 +356,15 @@ const LeadFormSection = ({ formRef }) => {
   };
 
   return (
-    <section ref={formRef} data-testid="lead-form-section" className="py-20 md:py-32">
+    <section ref={formRef} data-testid="lead-form-section" className="py-20 md:py-32 bg-stone-100">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
-            <span className="text-sm uppercase tracking-widest text-stone-500 mb-4 block">Начать сейчас</span>
+            <span className="text-sm uppercase tracking-widest text-stone-500 mb-4 block">Следующий шаг</span>
             <h2 className="font-heading text-3xl md:text-4xl font-semibold text-stone-900 leading-tight mb-4">
-              Получите доступ к курсу
+              Получите личный план старта
             </h2>
-            <p className="text-lg text-stone-600">Оставьте контакты для оформления доступа к обучению</p>
+            <p className="text-lg text-stone-600">Оставьте контакты и откройте пошаговую систему входа во фриланс</p>
           </div>
           
           <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-stone-200 shadow-lg p-8 md:p-10" data-testid="lead-form">

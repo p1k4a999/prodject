@@ -167,10 +167,10 @@ const translations = {
     // Creator
     creatorTag: 'Who created this',
     creatorName: 'Alexander Petrov',
-    creatorBio: '5 years in freelancing. Went from first $5 order to stable $3,000/month. Helped 2,400+ people start earning remotely. I know all the pitfalls and share only proven methods.',
+    creatorBio: '5 years in freelancing. Went from first $5 order to stable $8,500/month. Helped 2,400+ people start earning remotely. I know all the pitfalls and share only proven methods.',
     creatorExp: '5 years experience',
     creatorStudents: '2,400+ students',
-    creatorIncome: '$3K/month income',
+    creatorIncome: '$8,500/mo income',
     
     // Form
     formTag: 'Next step',

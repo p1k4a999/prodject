@@ -484,6 +484,7 @@ const LandingPage = () => {
         <ProblemsSection />
         <BenefitsSection />
         <TestimonialsSection />
+        <CreatorSection />
         <LeadFormSection formRef={formRef} />
       </main>
       <Footer />

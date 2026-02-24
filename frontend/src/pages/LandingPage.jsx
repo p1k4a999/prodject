@@ -123,49 +123,35 @@ const PartnersSection = () => {
         </p>
       </div>
       
-      {/* Seamless infinite marquee */}
-      <div className="marquee-wrapper">
-        <div className="marquee-track">
-          {[...partners, ...partners, ...partners, ...partners].map((partner, index) => (
-            <div key={index} className="marquee-item">
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                className="h-10 md:h-12 w-10 md:w-12 object-contain"
-              />
+      {/* Seamless infinite marquee - two identical tracks side by side */}
+      <div className="relative flex overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
+        <div className="flex shrink-0 animate-seamless-scroll gap-12 pr-12">
+          {partners.map((partner, index) => (
+            <div key={`set1-${index}`} className="flex items-center justify-center shrink-0 opacity-70 hover:opacity-100 transition-opacity">
+              <img src={partner.logo} alt={partner.name} className="h-10 md:h-12 w-10 md:w-12 object-contain" />
+            </div>
+          ))}
+        </div>
+        <div className="flex shrink-0 animate-seamless-scroll gap-12 pr-12">
+          {partners.map((partner, index) => (
+            <div key={`set2-${index}`} className="flex items-center justify-center shrink-0 opacity-70 hover:opacity-100 transition-opacity">
+              <img src={partner.logo} alt={partner.name} className="h-10 md:h-12 w-10 md:w-12 object-contain" />
             </div>
           ))}
         </div>
       </div>
       
       <style>{`
-        .marquee-wrapper {
-          width: 100%;
-          overflow: hidden;
-          mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-          -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-        }
-        .marquee-track {
-          display: flex;
-          gap: 3rem;
-          width: fit-content;
-          animation: marquee-scroll 30s linear infinite;
-        }
-        .marquee-item {
-          flex-shrink: 0;
-          opacity: 0.7;
-          transition: opacity 0.3s;
-        }
-        .marquee-item:hover {
-          opacity: 1;
-        }
-        @keyframes marquee-scroll {
-          from {
+        @keyframes seamless-scroll {
+          0% {
             transform: translateX(0);
           }
-          to {
-            transform: translateX(calc(-25% - 1.5rem));
+          100% {
+            transform: translateX(-100%);
           }
+        }
+        .animate-seamless-scroll {
+          animation: seamless-scroll 25s linear infinite;
         }
       `}</style>
     </section>

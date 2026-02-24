@@ -106,13 +106,13 @@ const PartnersSection = () => {
   
   const partners = [
     { name: 'LinkedIn', logo: 'https://cdn-icons-png.flaticon.com/512/174/174857.png' },
-    { name: 'Coursera', logo: 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png' },
-    { name: 'Harvard', logo: 'https://cdn-icons-png.flaticon.com/512/5968/5968823.png' },
-    { name: 'Udemy', logo: 'https://cdn-icons-png.flaticon.com/512/5968/5968878.png' },
-    { name: 'Skillshare', logo: 'https://cdn-icons-png.flaticon.com/512/5968/5968830.png' },
-    { name: 'YouTube', logo: 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png' },
-    { name: 'Slack', logo: 'https://cdn-icons-png.flaticon.com/512/2111/2111615.png' },
-    { name: 'Figma', logo: 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png' },
+    { name: 'Harvard', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Harvard_University_coat_of_arms.svg' },
+    { name: 'Stanford', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Stanford_Cardinal_logo.svg' },
+    { name: 'MIT', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/MIT_logo.svg' },
+    { name: 'Oxford', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Oxford-University-Circlet.svg' },
+    { name: 'Cambridge', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/c3/Coat_of_Arms_of_the_University_of_Cambridge.svg' },
+    { name: 'Yale', logo: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Yale_University_logo.svg' },
+    { name: 'Princeton', logo: 'https://upload.wikimedia.org/wikipedia/commons/d/d0/Princeton_seal.svg' },
   ];
 
   return (

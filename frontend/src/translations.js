@@ -14,7 +14,7 @@ const translations = {
     heroFirstOrderTime: 'через 2 недели',
     
     // Partners/Trust logos
-    partnersTitle: 'Нам доверяют',
+    partnersTitle: 'Нам доверяют выпускники и специалисты из',
     
     // Problems
     problemsTag: 'Знакомо?',

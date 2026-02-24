@@ -366,7 +366,7 @@ const CreatorSection = () => {
 const LeadFormSection = ({ formRef }) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', about: '' });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -374,6 +374,7 @@ const LeadFormSection = ({ formRef }) => {
     const newErrors = {};
     if (!formData.name.trim() || formData.name.length < 2) newErrors.name = t.formErrorName;
     if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = t.formErrorEmail;
+    if (!formData.phone.trim() || formData.phone.length < 6) newErrors.phone = t.formErrorPhone || 'Введите номер телефона';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -430,13 +431,27 @@ const LeadFormSection = ({ formRef }) => {
               
               <div>
                 <label htmlFor="phone" className="block text-sm font-medium text-stone-700 mb-2">
-                  {t.formPhone} <span className="text-stone-400">{t.formPhoneOptional}</span>
+                  {t.formPhone} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="tel" id="phone" data-testid="input-phone" value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full bg-stone-50 border border-stone-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#064E3B] focus:border-transparent outline-none transition-all placeholder:text-stone-400 text-stone-900"
+                  className={`w-full bg-stone-50 border rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#064E3B] focus:border-transparent outline-none transition-all placeholder:text-stone-400 text-stone-900 ${errors.phone ? 'border-red-400' : 'border-stone-200'}`}
                   placeholder="+1 (999) 123-4567"
+                />
+                {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+              </div>
+              
+              <div>
+                <label htmlFor="about" className="block text-sm font-medium text-stone-700 mb-2">
+                  {t.formAbout || 'О себе'}
+                </label>
+                <textarea
+                  id="about" data-testid="input-about" value={formData.about}
+                  onChange={(e) => setFormData({ ...formData, about: e.target.value })}
+                  rows={3}
+                  className="w-full bg-stone-50 border border-stone-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#064E3B] focus:border-transparent outline-none transition-all placeholder:text-stone-400 text-stone-900 resize-none"
+                  placeholder={t.formAboutPlaceholder || 'Расскажите немного о себе: чем занимаетесь, какие цели...'}
                 />
               </div>
               

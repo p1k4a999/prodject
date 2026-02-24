@@ -115,6 +115,9 @@ const PartnersSection = () => {
     { name: 'Oxford', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Oxford-University-Circlet.svg' },
   ];
 
+  // Дублируем массив для бесшовной анимации
+  const allPartners = [...partners, ...partners];
+
   return (
     <section className="py-12 bg-stone-100/50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12 mb-8">
@@ -123,27 +126,13 @@ const PartnersSection = () => {
         </p>
       </div>
       
-      {/* Animated marquee - infinite loop */}
-      <div className="relative flex overflow-hidden">
-        <div className="flex animate-marquee">
-          {[...partners, ...partners].map((partner, index) => (
+      {/* Animated marquee - seamless infinite loop */}
+      <div className="marquee-container">
+        <div className="marquee-content">
+          {allPartners.map((partner, index) => (
             <div
-              key={`a-${index}`}
-              className="flex items-center justify-center mx-8 md:mx-12 flex-shrink-0"
-            >
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                className="h-10 md:h-12 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
-              />
-            </div>
-          ))}
-        </div>
-        <div className="flex animate-marquee" aria-hidden="true">
-          {[...partners, ...partners].map((partner, index) => (
-            <div
-              key={`b-${index}`}
-              className="flex items-center justify-center mx-8 md:mx-12 flex-shrink-0"
+              key={index}
+              className="marquee-item"
             >
               <img
                 src={partner.logo}
@@ -156,12 +145,30 @@ const PartnersSection = () => {
       </div>
       
       <style>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-100%); }
+        .marquee-container {
+          width: 100%;
+          overflow: hidden;
         }
-        .animate-marquee {
-          animation: marquee 25s linear infinite;
+        .marquee-content {
+          display: flex;
+          gap: 4rem;
+          animation: scroll 20s linear infinite;
+          width: max-content;
+        }
+        .marquee-item {
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 1rem;
+        }
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
         }
       `}</style>
     </section>

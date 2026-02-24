@@ -100,6 +100,63 @@ const HeroSection = ({ scrollToForm }) => {
   );
 };
 
+// Partners Marquee Section - Animated logos
+const PartnersSection = () => {
+  const { t } = useLanguage();
+  
+  const partners = [
+    { name: 'LinkedIn', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png' },
+    { name: 'Coursera', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/97/Coursera-Logo_600x600.svg' },
+    { name: 'Harvard', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Harvard_University_coat_of_arms.svg' },
+    { name: 'Stanford', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Stanford_Cardinal_logo.svg' },
+    { name: 'MIT', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/MIT_logo.svg' },
+    { name: 'Google', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' },
+    { name: 'Udemy', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e3/Udemy_logo.svg' },
+    { name: 'Oxford', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Oxford-University-Circlet.svg' },
+  ];
+
+  return (
+    <section className="py-12 bg-stone-100/50 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-8">
+        <p className="text-center text-stone-500 text-sm uppercase tracking-widest">
+          {t.partnersTitle}
+        </p>
+      </div>
+      
+      {/* Animated marquee */}
+      <div className="relative">
+        <div className="flex animate-marquee whitespace-nowrap">
+          {[...partners, ...partners, ...partners].map((partner, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-center mx-8 md:mx-12 flex-shrink-0"
+            >
+              <img
+                src={partner.logo}
+                alt={partner.name}
+                className="h-8 md:h-10 w-auto object-contain opacity-40 hover:opacity-70 transition-opacity grayscale"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.33%); }
+        }
+        .animate-marquee {
+          animation: marquee 20s linear infinite;
+        }
+        .animate-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+    </section>
+  );
+};
+
 // Problems Section
 const ProblemsSection = () => {
   const { t } = useLanguage();

@@ -13,6 +13,9 @@ const translations = {
     heroFirstOrder: 'Первый заказ',
     heroFirstOrderTime: 'через 2 недели',
     
+    // Partners/Trust logos
+    partnersTitle: 'Нам доверяют',
+    
     // Problems
     problemsTag: 'Знакомо?',
     problemsTitle: 'Почему большинство',

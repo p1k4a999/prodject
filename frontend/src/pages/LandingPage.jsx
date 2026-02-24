@@ -483,6 +483,7 @@ const LandingPage = () => {
       <LanguageSwitcher />
       <main>
         <HeroSection scrollToForm={scrollToForm} />
+        <PartnersSection />
         <ProblemsSection />
         <BenefitsSection />
         <TestimonialsSection />

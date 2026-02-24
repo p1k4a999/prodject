@@ -105,18 +105,15 @@ const PartnersSection = () => {
   const { t } = useLanguage();
   
   const partners = [
-    { name: 'LinkedIn', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png' },
-    { name: 'Coursera', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/97/Coursera-Logo_600x600.svg' },
-    { name: 'Harvard', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Harvard_University_coat_of_arms.svg' },
-    { name: 'Stanford', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Stanford_Cardinal_logo.svg' },
-    { name: 'MIT', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/MIT_logo.svg' },
-    { name: 'Google', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' },
-    { name: 'Udemy', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e3/Udemy_logo.svg' },
-    { name: 'Oxford', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Oxford-University-Circlet.svg' },
+    { name: 'LinkedIn', logo: 'https://cdn-icons-png.flaticon.com/512/174/174857.png' },
+    { name: 'Coursera', logo: 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png' },
+    { name: 'Harvard', logo: 'https://cdn-icons-png.flaticon.com/512/5968/5968823.png' },
+    { name: 'Udemy', logo: 'https://cdn-icons-png.flaticon.com/512/5968/5968878.png' },
+    { name: 'Skillshare', logo: 'https://cdn-icons-png.flaticon.com/512/5968/5968830.png' },
+    { name: 'YouTube', logo: 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png' },
+    { name: 'Slack', logo: 'https://cdn-icons-png.flaticon.com/512/2111/2111615.png' },
+    { name: 'Figma', logo: 'https://cdn-icons-png.flaticon.com/512/5968/5968705.png' },
   ];
-
-  // Дублируем массив для бесшовной анимации
-  const allPartners = [...partners, ...partners];
 
   return (
     <section className="py-12 bg-stone-100/50 overflow-hidden">
@@ -126,18 +123,15 @@ const PartnersSection = () => {
         </p>
       </div>
       
-      {/* Animated marquee - seamless infinite loop */}
-      <div className="marquee-container">
-        <div className="marquee-content">
-          {allPartners.map((partner, index) => (
-            <div
-              key={index}
-              className="marquee-item"
-            >
+      {/* Seamless infinite marquee */}
+      <div className="marquee-wrapper">
+        <div className="marquee-track">
+          {[...partners, ...partners, ...partners, ...partners].map((partner, index) => (
+            <div key={index} className="marquee-item">
               <img
                 src={partner.logo}
                 alt={partner.name}
-                className="h-10 md:h-12 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
+                className="h-10 md:h-12 w-10 md:w-12 object-contain"
               />
             </div>
           ))}
@@ -145,29 +139,32 @@ const PartnersSection = () => {
       </div>
       
       <style>{`
-        .marquee-container {
+        .marquee-wrapper {
           width: 100%;
           overflow: hidden;
+          mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
-        .marquee-content {
+        .marquee-track {
           display: flex;
-          gap: 4rem;
-          animation: scroll 20s linear infinite;
-          width: max-content;
+          gap: 3rem;
+          width: fit-content;
+          animation: marquee-scroll 30s linear infinite;
         }
         .marquee-item {
           flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0 1rem;
+          opacity: 0.7;
+          transition: opacity 0.3s;
         }
-        @keyframes scroll {
-          0% {
+        .marquee-item:hover {
+          opacity: 1;
+        }
+        @keyframes marquee-scroll {
+          from {
             transform: translateX(0);
           }
-          100% {
-            transform: translateX(-50%);
+          to {
+            transform: translateX(calc(-25% - 1.5rem));
           }
         }
       `}</style>

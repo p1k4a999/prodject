@@ -123,18 +123,32 @@ const PartnersSection = () => {
         </p>
       </div>
       
-      {/* Animated marquee */}
-      <div className="relative">
-        <div className="flex animate-marquee whitespace-nowrap">
-          {[...partners, ...partners, ...partners].map((partner, index) => (
+      {/* Animated marquee - infinite loop */}
+      <div className="relative flex overflow-hidden">
+        <div className="flex animate-marquee">
+          {[...partners, ...partners].map((partner, index) => (
             <div
-              key={index}
+              key={`a-${index}`}
               className="flex items-center justify-center mx-8 md:mx-12 flex-shrink-0"
             >
               <img
                 src={partner.logo}
                 alt={partner.name}
-                className="h-8 md:h-10 w-auto object-contain opacity-40 hover:opacity-70 transition-opacity grayscale"
+                className="h-10 md:h-12 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
+              />
+            </div>
+          ))}
+        </div>
+        <div className="flex animate-marquee" aria-hidden="true">
+          {[...partners, ...partners].map((partner, index) => (
+            <div
+              key={`b-${index}`}
+              className="flex items-center justify-center mx-8 md:mx-12 flex-shrink-0"
+            >
+              <img
+                src={partner.logo}
+                alt={partner.name}
+                className="h-10 md:h-12 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
               />
             </div>
           ))}
@@ -144,13 +158,10 @@ const PartnersSection = () => {
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(0); }
-          100% { transform: translateX(-33.33%); }
+          100% { transform: translateX(-100%); }
         }
         .animate-marquee {
-          animation: marquee 20s linear infinite;
-        }
-        .animate-marquee:hover {
-          animation-play-state: paused;
+          animation: marquee 25s linear infinite;
         }
       `}</style>
     </section>

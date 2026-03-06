@@ -19,10 +19,10 @@
               <button class="cta" id="scrollToForm" type="button">Get step-by-step plan →</button>
               <div class="proof">
                 <div class="avatars">
-                  <img src="./assets/testimonial-1.svg" alt="" />
-                  <img src="./assets/testimonial-2.svg" alt="" />
-                  <img src="./assets/testimonial-3.svg" alt="" />
-                  <img src="./assets/testimonial-4.svg" alt="" />
+                  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face" alt="Client 1" />
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" alt="Client 2" />
+                  <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=face" alt="Client 3" />
+                  <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face" alt="Client 4" />
                 </div>
                 <span>2,400+ got the plan</span>
                 <span>★ 4.9 rating</span>
@@ -36,8 +36,10 @@
 
         <section class="partners section">
           <div class="container">
-            <p class="eyebrow center">Trusted by graduates and specialists from</p>
-            <div class="logo-row">
+            <p class="eyebrow center">Trusted by specialists from LinkedIn and top colleges / lyceums</p>
+          </div>
+          <div class="logo-marquee" aria-label="Sponsor and education logos">
+            <div class="logo-track">
               <img src="./assets/logo-linkedin.svg" alt="LinkedIn" />
               <img src="./assets/logo-harvard.svg" alt="Harvard" />
               <img src="./assets/logo-stanford.svg" alt="Stanford" />
@@ -46,6 +48,24 @@
               <img src="./assets/logo-cambridge.svg" alt="Cambridge" />
               <img src="./assets/logo-yale.svg" alt="Yale" />
               <img src="./assets/logo-princeton.svg" alt="Princeton" />
+              <img src="./assets/logo-coursera.svg" alt="Coursera" />
+              <img src="./assets/logo-edx.svg" alt="edX" />
+              <img src="./assets/logo-khan.svg" alt="Khan Academy" />
+              <img src="./assets/logo-lyceum.svg" alt="Academic Lyceum" />
+            </div>
+            <div class="logo-track" aria-hidden="true">
+              <img src="./assets/logo-linkedin.svg" alt="" />
+              <img src="./assets/logo-harvard.svg" alt="" />
+              <img src="./assets/logo-stanford.svg" alt="" />
+              <img src="./assets/logo-mit.svg" alt="" />
+              <img src="./assets/logo-oxford.svg" alt="" />
+              <img src="./assets/logo-cambridge.svg" alt="" />
+              <img src="./assets/logo-yale.svg" alt="" />
+              <img src="./assets/logo-princeton.svg" alt="" />
+              <img src="./assets/logo-coursera.svg" alt="" />
+              <img src="./assets/logo-edx.svg" alt="" />
+              <img src="./assets/logo-khan.svg" alt="" />
+              <img src="./assets/logo-lyceum.svg" alt="" />
             </div>
           </div>
         </section>
@@ -78,18 +98,16 @@
         <section class="section muted">
           <div class="container">
             <p class="eyebrow center">Reviews</p>
-            <h2 class="center">They already <span class="green">started earning</span></h2>
-            <div class="cards three testimonials">
-              <article class="card"><p>"I got my first order in 3 weeks. The plan made it clear what to do first."</p><div class="person"><img src="./assets/testimonial-1.svg" alt="Anna" /><div><strong>Anna K.</strong><small>Copywriter • +$1,200/mo</small></div></div></article>
-              <article class="card"><p>"I switched from factory work to remote projects. The structure changed everything."</p><div class="person"><img src="./assets/testimonial-2.svg" alt="Michael" /><div><strong>Michael D.</strong><small>Designer • +$2,400/mo</small></div></div></article>
-              <article class="card"><p>"As a mom, I needed flexibility. Now I work 4 hours/day with stable income."</p><div class="person"><img src="./assets/testimonial-3.svg" alt="Elena" /><div><strong>Elena V.</strong><small>VA • +$950/mo</small></div></div></article>
-            </div>
+            <h2 class="center">More people, real results <span class="green">(auto rotating)</span></h2>
+            <p class="center lead">Carousel loops automatically. Tap dots to view specific stories.</p>
+            <div id="testimonialCarousel" class="cards three testimonials" aria-live="polite"></div>
+            <div id="testimonialDots" class="carousel-dots" aria-label="Testimonials navigation"></div>
           </div>
         </section>
 
         <section class="section">
           <div class="container creator">
-            <img src="./assets/creator.svg" alt="Alexander Petrov" />
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=300&fit=crop&crop=face" alt="Alexander Petrov" />
             <div>
               <p class="eyebrow">Who created this</p>
               <h3>Alexander Petrov</h3>

@@ -28,7 +28,6 @@ const testimonials = [
 
 const carousel = document.getElementById('testimonialCarousel');
 const dotsWrap = document.getElementById('testimonialDots');
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let startIndex = 0;
 let timer;
 
@@ -52,12 +51,6 @@ function renderTestimonials() {
 
 function animateTo(nextIndex) {
   if (!carousel) return;
-  if (reducedMotion) {
-    startIndex = nextIndex;
-    renderTestimonials();
-    return;
-  }
-
   carousel.classList.remove('fade-in');
   carousel.classList.add('fade-out');
   setTimeout(() => {
@@ -73,8 +66,8 @@ function nextSlide() {
 }
 
 function startRotation() {
-  if (reducedMotion) return;
-  timer = setInterval(nextSlide, 3200);
+  clearInterval(timer);
+  timer = setInterval(nextSlide, 2800);
 }
 
 function stopRotation() {
@@ -94,9 +87,6 @@ dotsWrap?.addEventListener('click', (e) => {
 
 carousel?.addEventListener('mouseenter', stopRotation);
 carousel?.addEventListener('mouseleave', startRotation);
-carousel?.addEventListener('touchstart', stopRotation, { passive: true });
-carousel?.addEventListener('touchend', startRotation, { passive: true });
-
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
     stopRotation();

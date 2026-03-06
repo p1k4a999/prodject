@@ -23,7 +23,11 @@ const testimonials = [
   { text: 'I left my office work and now I choose projects and clients by myself.', name: 'Olga M.', role: 'Content Manager • +$1,800/mo', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=240&h=240&fit=crop&crop=face' },
   { text: 'Started as a hobby, now editing videos is my main monthly income.', name: 'Artem N.', role: 'Video Editor • +$2,800/mo', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=240&h=240&fit=crop&crop=face' },
   { text: 'Got first client from LinkedIn thanks to the scripts and portfolio tips.', name: 'Sofia L.', role: 'UX Designer • +$1,650/mo', image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=240&h=240&fit=crop&crop=face' },
-  { text: 'I finally understood where to start and stopped wasting months on theory.', name: 'Maksim P.', role: 'No-code Dev • +$2,050/mo', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=240&h=240&fit=crop&crop=face' }
+  { text: 'I finally understood where to start and stopped wasting months on theory.', name: 'Maksim P.', role: 'No-code Dev • +$2,050/mo', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=240&h=240&fit=crop&crop=face' },
+  { text: 'With scripts from the plan, I closed my first client in 5 days.', name: 'Nastya R.', role: 'Virtual Assistant • +$1,100/mo', image: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=240&h=240&fit=crop&crop=face' },
+  { text: 'I now have stable weekly orders and no panic about finding clients.', name: 'Kirill T.', role: 'Motion Designer • +$2,300/mo', image: 'https://images.unsplash.com/photo-1504593811423-6dd665756598?w=240&h=240&fit=crop&crop=face' },
+  { text: 'This roadmap removed all chaos. I just followed steps and got results.', name: 'Alina B.', role: 'Content Creator • +$1,400/mo', image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=240&h=240&fit=crop&crop=face' },
+  { text: 'First month was enough to replace my part-time income completely.', name: 'Roman V.', role: 'Webflow Dev • +$2,600/mo', image: 'https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=240&h=240&fit=crop&crop=face' }
 ];
 
 const carousel = document.getElementById('testimonialCarousel');

@@ -2,6 +2,23 @@ document.getElementById('scrollToForm')?.addEventListener('click', () => {
   document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
+const thankYouScreen = document.getElementById('thankYouScreen');
+const thankYouName = document.getElementById('thankYouName');
+const thankYouEmail = document.getElementById('thankYouEmail');
+
+function openThankYou(name, email) {
+  if (thankYouName) thankYouName.textContent = name || 'друг';
+  if (thankYouEmail) thankYouEmail.textContent = `Проверьте почту (${email || 'ваш email'})`;
+  document.body.classList.add('show-thankyou');
+  thankYouScreen?.scrollTo?.(0, 0);
+}
+
+function closeThankYou() {
+  document.body.classList.remove('show-thankyou');
+}
+
+document.getElementById('backToLanding')?.addEventListener('click', closeThankYou);
+
 document.getElementById('mockForm')?.addEventListener('submit', (event) => {
   event.preventDefault();
   const form = event.currentTarget;
@@ -10,8 +27,14 @@ document.getElementById('mockForm')?.addEventListener('submit', (event) => {
     form.reportValidity();
     return;
   }
-  status.textContent = '✅ Success! Your request is saved locally (mock submit, no network call).';
+
+  const data = new FormData(form);
+  const name = String(data.get('name') || '').trim();
+  const email = String(data.get('email') || '').trim();
+
+  status.textContent = '✅ Данные сохранены локально. Открываем следующий шаг...';
   status.classList.add('success');
+  openThankYou(name, email);
   form.reset();
 });
 

@@ -7,8 +7,8 @@ const thankYouName = document.getElementById('thankYouName');
 const thankYouEmail = document.getElementById('thankYouEmail');
 
 function openThankYou(name, email) {
-  if (thankYouName) thankYouName.textContent = name || 'друг';
-  if (thankYouEmail) thankYouEmail.textContent = `Проверьте почту (${email || 'ваш email'})`;
+  if (thankYouName) thankYouName.textContent = name || 'friend';
+  if (thankYouEmail) thankYouEmail.textContent = `Check your inbox (${email || 'your email'})`;
   document.body.classList.add('show-thankyou');
   thankYouScreen?.scrollTo?.(0, 0);
 }
@@ -32,7 +32,7 @@ document.getElementById('mockForm')?.addEventListener('submit', (event) => {
   const name = String(data.get('name') || '').trim();
   const email = String(data.get('email') || '').trim();
 
-  status.textContent = '✅ Данные сохранены локально. Открываем следующий шаг...';
+  status.textContent = '✅ Saved locally. Opening the next step...' ;
   status.classList.add('success');
   openThankYou(name, email);
   form.reset();

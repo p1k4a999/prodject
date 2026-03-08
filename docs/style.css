@@ -47,6 +47,7 @@ body.show-thankyou .thankyou-screen{display:block}
 .thank-card ul{list-style:none;padding:0;margin:12px 0}.thank-card li{margin:5px 0;color:#1f2937}
 .price{display:flex;align-items:baseline;gap:10px}.price s{color:#a8a29e}.price strong{font-size:38px}.price span{color:#059669}
 .thank-cta{width:100%;margin-top:10px}
+.basic-cta{width:100%;margin-top:10px;background:#111827}
 .back-link{display:block;margin:12px auto 0;background:none;border:0;color:#57534e;text-decoration:underline;cursor:pointer}
 body.show-thankyou .grain-overlay{display:none}
 .offer-panel{background:linear-gradient(145deg,#065f46,#0f766e);color:#ecfeff;border-radius:18px;padding:26px 24px;margin:18px 0}

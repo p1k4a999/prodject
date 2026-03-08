@@ -62,3 +62,13 @@ body.show-thankyou .grain-overlay{display:none}
 .quote-card{margin:14px 0 8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:18px 20px;color:#444;text-align:center;font-style:italic}
 .quote-card footer{margin-top:10px;font-style:normal;color:#666}
 @media (max-width:900px){.offer-panel h3{font-size:30px}.offer-grid{grid-template-columns:1fr 1fr;gap:8px 12px;font-size:15px}.offer-stats{font-size:15px}.offer-btn{font-size:1rem}}
+.results-luxury{margin:20px 0 10px}
+.results-luxury h4{text-align:center;font-size:30px;margin:.2em 0;color:#111827}
+.results-luxury>p{text-align:center;color:#57534e;margin:0 0 12px}
+.luxury-marquee{display:flex;overflow:hidden;gap:14px;mask-image:linear-gradient(to right,transparent,black 8%,black 92%,transparent);-webkit-mask-image:linear-gradient(to right,transparent,black 8%,black 92%,transparent)}
+.luxury-track{display:flex;gap:14px;flex-shrink:0;min-width:max-content;animation:lux-scroll 28s linear infinite}
+.luxury-track figure{margin:0;width:220px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden}
+.luxury-track img{width:100%;height:138px;object-fit:cover;display:block}
+.luxury-track figcaption{padding:8px 10px;font-size:13px;color:#374151}
+@keyframes lux-scroll{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+@media (max-width:900px){.results-luxury h4{font-size:25px}.luxury-track figure{width:180px}.luxury-track img{height:118px}}

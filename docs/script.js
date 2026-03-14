@@ -1,72 +1,74 @@
-const TELEGRAM_BOT_TOKEN = window.TELEGRAM_BOT_TOKEN || '';
-const TELEGRAM_CHAT_ID = window.TELEGRAM_CHAT_ID || '';
-const LEAD_API_URL = window.LEAD_API_URL || '';
-const LEAD_API_KEY = window.LEAD_API_KEY || '';
+const GOOGLE_SCRIPT_URL = window.GOOGLE_SCRIPT_URL || '';
 
-function detectCountryCode() {
-  const locale = navigator.language || '';
-  const part = locale.split('-')[1] || '';
-  return (part || 'UN').toUpperCase();
+const LANGUAGE_MAP = {
+  pl: 'PL',
+  ru: 'RU',
+  uk: 'UA',
+  ua: 'UA',
+  de: 'DE',
+  en: 'EN'
+};
+
+let countryCodeCache = '';
+
+function detectLanguageCode() {
+  const htmlLang = (document.documentElement.getAttribute('lang') || '').toLowerCase();
+  const navLang = (navigator.language || '').toLowerCase();
+  const raw = (htmlLang || navLang || 'en').split('-')[0];
+  return LANGUAGE_MAP[raw] || 'EN';
 }
 
-async function sendLeadToLeadApi(payload) {
-  if (!LEAD_API_URL) {
-    throw new Error('Lead API url is missing');
+function detectTrafficSource() {
+  const params = new URLSearchParams(window.location.search);
+  const utm = params.get('utm_source');
+  if (utm) return utm;
+  if (document.referrer) {
+    try {
+      return new URL(document.referrer).hostname || 'referral';
+    } catch (_) {
+      return 'referral';
+    }
+  }
+  return 'direct';
+}
+
+async function detectCountryByIp() {
+  if (countryCodeCache) return countryCodeCache;
+  try {
+    const response = await fetch('https://ipapi.co/json/', { method: 'GET' });
+    if (!response.ok) throw new Error('ipapi failed');
+    const data = await response.json();
+    const code = String(data?.country_code || '').toUpperCase();
+    countryCodeCache = code || 'UN';
+    return countryCodeCache;
+  } catch (_) {
+    countryCodeCache = 'UN';
+    return countryCodeCache;
+  }
+}
+
+async function sendLeadToGoogleDrive(payload) {
+  if (!GOOGLE_SCRIPT_URL) {
+    throw new Error('Google Script URL is missing');
   }
 
-  const response = await fetch(LEAD_API_URL, {
+  const response = await fetch(GOOGLE_SCRIPT_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(LEAD_API_KEY ? { 'X-API-Key': LEAD_API_KEY } : {})
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
 
-  if (!response.ok) {
-    let msg = `Lead API failed: ${response.status}`;
-    try {
-      const data = await response.json();
-      msg = data?.detail || msg;
-    } catch (_) {}
-    throw new Error(msg);
-  }
-}
-
-async function sendLeadToTelegram(payload) {
-  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-    throw new Error('Telegram bot config is missing');
+  let result = null;
+  try {
+    result = await response.json();
+  } catch (_) {
+    result = null;
   }
 
-  const text = [
-    '📥 New lead from landing',
-    `Name: ${payload.name}`,
-    `Surname: ${payload.surname}`,
-    `Email: ${payload.email}`,
-    `Phone: ${payload.phone}`,
-    `Country: ${payload.country || 'UN'}`,
-    `About: ${payload.about || '-'}`,
-    `Time: ${new Date().toLocaleString()}`
-  ].join('\n');
-
-  const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
-  });
-
-  const result = await response.json();
-  if (!response.ok || !result.ok) {
-    throw new Error(result?.description || 'Telegram send failed');
+  const okByBody = result && (result.success === true || result.status === 'ok' || result.ok === true);
+  if (!response.ok || !okByBody) {
+    throw new Error(result?.error || result?.message || `Google script failed: ${response.status}`);
   }
-}
-
-async function sendLead(payload) {
-  if (LEAD_API_URL) {
-    await sendLeadToLeadApi(payload);
-    return;
-  }
-  await sendLeadToTelegram(payload);
 }
 
 document.getElementById('scrollToForm')?.addEventListener('click', () => {
@@ -94,31 +96,62 @@ document.getElementById('mockForm')?.addEventListener('submit', async (event) =>
   event.preventDefault();
   const form = event.currentTarget;
   const status = document.getElementById('formStatus');
+  const submitBtn = form.querySelector('button[type="submit"]');
+
   if (!form.checkValidity()) {
     form.reportValidity();
     return;
   }
 
   const data = new FormData(form);
+  const honeypot = String(data.get('website') || '').trim();
+  if (honeypot) {
+    status.textContent = '⚠️ Submission blocked.';
+    status.classList.remove('success');
+    return;
+  }
+
   const name = String(data.get('name') || '').trim();
   const surname = String(data.get('surname') || '').trim();
-  const email = String(data.get('email') || '').trim();
   const phone = String(data.get('phone') || '').trim();
   const about = String(data.get('about') || '').trim();
-  const country = detectCountryCode();
+  const language = detectLanguageCode();
 
+  if (!name || !phone || !language) {
+    status.textContent = '⚠️ Please fill required fields (name, phone).';
+    status.classList.remove('success');
+    return;
+  }
+
+  submitBtn && (submitBtn.disabled = true);
   status.textContent = 'Sending your request...';
   status.classList.remove('success');
 
   try {
-    await sendLead({ name, surname, email, phone, about, country, source: 'landing-page' });
+    const country = await detectCountryByIp();
+    const now = new Date();
+
+    await sendLeadToGoogleDrive({
+      name,
+      surname,
+      phone,
+      about,
+      language,
+      country,
+      source: detectTrafficSource(),
+      date: now.toLocaleDateString(),
+      time: now.toLocaleTimeString()
+    });
+
     status.textContent = '✅ Request sent successfully. Opening the next step...';
     status.classList.add('success');
-    openThankYou(`${name} ${surname}`.trim(), email);
+    openThankYou(`${name} ${surname}`.trim(), String(data.get('email') || '').trim());
     form.reset();
   } catch (error) {
-    status.textContent = '⚠️ Could not send lead. Configure LEAD_API_URL (+ X-API-Key) or Telegram settings.';
+    status.textContent = '⚠️ Could not send lead. Configure GOOGLE_SCRIPT_URL and try again.';
     status.classList.remove('success');
+  } finally {
+    submitBtn && (submitBtn.disabled = false);
   }
 });
 

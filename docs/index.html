@@ -139,6 +139,7 @@
               <label>Email<input required type="email" name="email" placeholder="your@email.com" /></label>
               <label>Phone<input required minlength="6" type="tel" name="phone" placeholder="+1 (999) 123-4567" /></label>
               <label>About you<textarea name="about" rows="3" placeholder="Your goals, background, interests..."></textarea></label>
+              <label class="hp-field" aria-hidden="true">Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
               <button class="cta" type="submit">Unlock the system →</button>
               <p id="formStatus" class="status" aria-live="polite"></p>
             </form>
@@ -220,10 +221,7 @@
     </section>
 
     <script>
-      window.LEAD_API_URL = window.LEAD_API_URL || "";
-      window.LEAD_API_KEY = window.LEAD_API_KEY || "";
-      window.TELEGRAM_BOT_TOKEN = window.TELEGRAM_BOT_TOKEN || "";
-      window.TELEGRAM_CHAT_ID = window.TELEGRAM_CHAT_ID || "";
+      window.GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbztKdK4azeHpFlig-sTxcUGjLDpdmagabRJFSLm7zNztjQ5gXGGN4jGZqKfzz1_Vx7b/exec";
     </script>
     <script src="./script.js"></script>
   </body>

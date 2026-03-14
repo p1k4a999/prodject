@@ -65,20 +65,34 @@ const testimonials = [
   { text: 'I turned social media freelancing into a predictable business with long-term contracts.', name: 'Taras P.', role: 'Social Media • +$2970/mo', image: 'https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=240&h=240&fit=crop&crop=face' }
 ];
 
+const testimonialFallbacks = [
+  './assets/testimonial-1.svg',
+  './assets/testimonial-2.svg',
+  './assets/testimonial-3.svg',
+  './assets/testimonial-4.svg',
+  './assets/testimonial-5.svg',
+  './assets/testimonial-6.svg'
+];
+
+const testimonialsWithFallback = testimonials.map((item, index) => ({
+  ...item,
+  fallback: testimonialFallbacks[index % testimonialFallbacks.length]
+}));
+
 const carousel = document.getElementById('testimonialCarousel');
 const dotsWrap = document.getElementById('testimonialDots');
 const cardsPerView = 3;
-const totalPages = Math.floor(testimonials.length / cardsPerView);
+const totalPages = Math.floor(testimonialsWithFallback.length / cardsPerView);
 let currentPage = Math.floor(Math.random() * totalPages);
 let timer;
 
 function renderTestimonials() {
   if (!carousel) return;
   const startIndex = currentPage * cardsPerView;
-  const visible = testimonials.slice(startIndex, startIndex + cardsPerView);
+  const visible = testimonialsWithFallback.slice(startIndex, startIndex + cardsPerView);
   carousel.innerHTML = visible
     .map(
-      (item) => `<article class="card"><p>"${item.text}"</p><div class="person"><img src="${item.image}" alt="${item.name}" /><div><strong>${item.name}</strong><small>${item.role}</small></div></div></article>`
+      (item) => `<article class="card"><p>"${item.text}"</p><div class="person"><img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.onerror=null;this.src='${item.fallback}';" /><div><strong>${item.name}</strong><small>${item.role}</small></div></div></article>`
     )
     .join('');
 

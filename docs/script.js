@@ -52,15 +52,18 @@ async function sendLeadToGoogleDrive(payload) {
     throw new Error('Google Script URL is missing');
   }
 
+  // Apps Script Web Apps often fail CORS preflight for application/json.
+  // Send JSON body with a "simple" content-type to avoid OPTIONS preflight.
   const response = await fetch(GOOGLE_SCRIPT_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload)
   });
 
+  const responseText = await response.text();
   let result = null;
   try {
-    result = await response.json();
+    result = responseText ? JSON.parse(responseText) : null;
   } catch (_) {
     result = null;
   }
@@ -148,7 +151,7 @@ document.getElementById('mockForm')?.addEventListener('submit', async (event) =>
     openThankYou(`${name} ${surname}`.trim(), String(data.get('email') || '').trim());
     form.reset();
   } catch (error) {
-    status.textContent = '⚠️ Could not send lead. Configure GOOGLE_SCRIPT_URL and try again.';
+    status.textContent = `⚠️ Could not send lead: ${error?.message || 'unknown error'}`;
     status.classList.remove('success');
   } finally {
     submitBtn && (submitBtn.disabled = false);

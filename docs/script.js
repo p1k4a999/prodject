@@ -1,3 +1,74 @@
+const TELEGRAM_BOT_TOKEN = window.TELEGRAM_BOT_TOKEN || '';
+const TELEGRAM_CHAT_ID = window.TELEGRAM_CHAT_ID || '';
+const LEAD_API_URL = window.LEAD_API_URL || '';
+const LEAD_API_KEY = window.LEAD_API_KEY || '';
+
+function detectCountryCode() {
+  const locale = navigator.language || '';
+  const part = locale.split('-')[1] || '';
+  return (part || 'UN').toUpperCase();
+}
+
+async function sendLeadToLeadApi(payload) {
+  if (!LEAD_API_URL) {
+    throw new Error('Lead API url is missing');
+  }
+
+  const response = await fetch(LEAD_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(LEAD_API_KEY ? { 'X-API-Key': LEAD_API_KEY } : {})
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    let msg = `Lead API failed: ${response.status}`;
+    try {
+      const data = await response.json();
+      msg = data?.detail || msg;
+    } catch (_) {}
+    throw new Error(msg);
+  }
+}
+
+async function sendLeadToTelegram(payload) {
+  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+    throw new Error('Telegram bot config is missing');
+  }
+
+  const text = [
+    '📥 New lead from landing',
+    `Name: ${payload.name}`,
+    `Surname: ${payload.surname}`,
+    `Email: ${payload.email}`,
+    `Phone: ${payload.phone}`,
+    `Country: ${payload.country || 'UN'}`,
+    `About: ${payload.about || '-'}`,
+    `Time: ${new Date().toLocaleString()}`
+  ].join('\n');
+
+  const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
+  });
+
+  const result = await response.json();
+  if (!response.ok || !result.ok) {
+    throw new Error(result?.description || 'Telegram send failed');
+  }
+}
+
+async function sendLead(payload) {
+  if (LEAD_API_URL) {
+    await sendLeadToLeadApi(payload);
+    return;
+  }
+  await sendLeadToTelegram(payload);
+}
+
 document.getElementById('scrollToForm')?.addEventListener('click', () => {
   document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
@@ -19,7 +90,7 @@ function closeThankYou() {
 
 document.getElementById('backToLanding')?.addEventListener('click', closeThankYou);
 
-document.getElementById('mockForm')?.addEventListener('submit', (event) => {
+document.getElementById('mockForm')?.addEventListener('submit', async (event) => {
   event.preventDefault();
   const form = event.currentTarget;
   const status = document.getElementById('formStatus');
@@ -30,12 +101,25 @@ document.getElementById('mockForm')?.addEventListener('submit', (event) => {
 
   const data = new FormData(form);
   const name = String(data.get('name') || '').trim();
+  const surname = String(data.get('surname') || '').trim();
   const email = String(data.get('email') || '').trim();
+  const phone = String(data.get('phone') || '').trim();
+  const about = String(data.get('about') || '').trim();
+  const country = detectCountryCode();
 
-  status.textContent = '✅ Saved locally. Opening the next step...' ;
-  status.classList.add('success');
-  openThankYou(name, email);
-  form.reset();
+  status.textContent = 'Sending your request...';
+  status.classList.remove('success');
+
+  try {
+    await sendLead({ name, surname, email, phone, about, country, source: 'landing-page' });
+    status.textContent = '✅ Request sent successfully. Opening the next step...';
+    status.classList.add('success');
+    openThankYou(`${name} ${surname}`.trim(), email);
+    form.reset();
+  } catch (error) {
+    status.textContent = '⚠️ Could not send lead. Configure LEAD_API_URL (+ X-API-Key) or Telegram settings.';
+    status.classList.remove('success');
+  }
 });
 
 const testimonials = [

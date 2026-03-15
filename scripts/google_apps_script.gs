@@ -7,12 +7,16 @@
  */
 
 const ROOT_FOLDER_ID = 'PASTE_GOOGLE_DRIVE_FOLDER_ID_HERE';
+const SCRIPT_VERSION = 'v2-debug-2026-03-15';
 const TAB_NAMES = ['PL', 'DE', 'UA', 'RU', 'EU'];
 const HEADERS = ['name', 'surname', 'phone', 'about', 'language', 'country', 'source', 'date', 'time', 'created_at'];
 
 function doPost(e) {
   try {
-    const payload = JSON.parse(e.postData.contents || '{}');
+    const payload = parsePayload(e);
+    Logger.log('SCRIPT_VERSION=%s', SCRIPT_VERSION);
+    Logger.log('RAW_POST=%s', e && e.postData ? e.postData.contents : '');
+    Logger.log('PAYLOAD=%s', JSON.stringify(payload));
 
     const now = new Date();
     const ym = Utilities.formatDate(now, Session.getScriptTimeZone(), 'yyyy_MM');
@@ -38,9 +42,39 @@ function doPost(e) {
       now.toISOString()
     ]);
 
-    return jsonResponse({ status: 'ok', success: true });
+    return jsonResponse({
+      status: 'ok',
+      success: true,
+      scriptVersion: SCRIPT_VERSION,
+      tab,
+      country,
+      spreadsheetId: spreadsheet.getId()
+    });
   } catch (err) {
-    return jsonResponse({ status: 'error', success: false, error: String(err) });
+    Logger.log('ERROR=%s', err && err.stack ? err.stack : String(err));
+    return jsonResponse({
+      status: 'error',
+      success: false,
+      scriptVersion: SCRIPT_VERSION,
+      error: String(err)
+    });
+  }
+}
+
+function parsePayload(e) {
+  const raw = e && e.postData && e.postData.contents ? String(e.postData.contents) : '';
+  if (!raw) return {};
+
+  try {
+    return JSON.parse(raw);
+  } catch (_) {
+    // fallback: if frontend sent x-www-form-urlencoded with payload=<json>
+    const paramPayload = e && e.parameter && e.parameter.payload ? String(e.parameter.payload) : '';
+    if (paramPayload) {
+      return JSON.parse(paramPayload);
+    }
+
+    throw new Error('Unable to parse request body as JSON');
   }
 }
 

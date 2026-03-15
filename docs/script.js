@@ -52,6 +52,8 @@ async function sendLeadToGoogleDrive(payload) {
     throw new Error('Google Script URL is missing');
   }
 
+  console.log('[lead] request body:', JSON.stringify(payload, null, 2));
+
   // Apps Script Web Apps often fail CORS preflight for application/json.
   // Send JSON body with a "simple" content-type to avoid OPTIONS preflight.
   const response = await fetch(GOOGLE_SCRIPT_URL, {
@@ -61,6 +63,8 @@ async function sendLeadToGoogleDrive(payload) {
   });
 
   const responseText = await response.text();
+  console.log('[lead] apps script raw response:', responseText);
+
   let result = null;
   try {
     result = responseText ? JSON.parse(responseText) : null;
@@ -70,8 +74,10 @@ async function sendLeadToGoogleDrive(payload) {
 
   const okByBody = result && (result.success === true || result.status === 'ok' || result.ok === true);
   if (!response.ok || !okByBody) {
-    throw new Error(result?.error || result?.message || `Google script failed: ${response.status}`);
+    throw new Error(result?.error || result?.message || `Google script failed: ${response.status}; response: ${responseText}`);
   }
+
+  return { result, responseText };
 }
 
 document.getElementById('scrollToForm')?.addEventListener('click', () => {
@@ -134,7 +140,7 @@ document.getElementById('mockForm')?.addEventListener('submit', async (event) =>
     const country = await detectCountryByIp();
     const now = new Date();
 
-    await sendLeadToGoogleDrive({
+    const payload = {
       name,
       surname,
       phone,
@@ -144,9 +150,17 @@ document.getElementById('mockForm')?.addEventListener('submit', async (event) =>
       source: detectTrafficSource(),
       date: now.toLocaleDateString(),
       time: now.toLocaleTimeString()
-    });
+    };
 
-    status.textContent = '✅ Request sent successfully. Opening the next step...';
+    const requiredFieldsOk = Boolean(payload.name && payload.phone && payload.language);
+    if (!requiredFieldsOk) {
+      throw new Error('Required fields are empty before request build');
+    }
+
+    const { result, responseText } = await sendLeadToGoogleDrive(payload);
+
+    status.textContent = `✅ Request sent successfully (${result?.tab || 'n/a'} tab).`;
+    console.log('[lead] parsed response object:', result || responseText);
     status.classList.add('success');
     openThankYou(`${name} ${surname}`.trim(), String(data.get('email') || '').trim());
     form.reset();

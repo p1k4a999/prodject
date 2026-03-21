@@ -141,7 +141,9 @@ function closeThankYou() {
 document.getElementById('backToLanding')?.addEventListener('click', closeThankYou);
 
 function getPaypalEndpoint(path) {
-  return `${PAYPAL_API_BASE}${path}`;
+  const endpoint = `${PAYPAL_API_BASE}${path}`;
+  console.log('[paypal] resolved endpoint:', endpoint);
+  return endpoint;
 }
 
 function getPaymentUi(productType) {
@@ -213,7 +215,10 @@ async function createPayPalOrder(productType) {
       paypalBody
     });
 
-    throw new Error(`create-order failed | backend status: ${response.status} | ${detailMessage}`);
+    const methodHint = response.status === 405
+      ? ' | HTTP 405 means this host is not accepting POST on /api/paypal/create-order. If the page is opened without the real backend, deploy/use the backend host and set PAYPAL_API_BASE.'
+      : '';
+    throw new Error(`create-order failed | backend status: ${response.status} | ${detailMessage}${methodHint}`);
   }
 
   return result.id;

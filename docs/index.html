@@ -187,7 +187,11 @@
             <li>✓ Personal consultation</li>
           </ul>
           <p class="price"><s>$99</s> <strong>$20</strong> <span>-80% today</span></p>
-          <button type="button" class="cta thank-cta">Get full system for $20 →</button>
+          <button type="button" class="cta thank-cta" data-product-type="basic">Get full system for $20 →</button>
+          <div id="paypalBasicWrap" class="paypal-inline-checkout" hidden>
+            <div id="paypalBasicStatus" class="payment-status" aria-live="polite"></div>
+            <div id="paypalBasicButtons"></div>
+          </div>
         </article>
 
         <section class="offer-panel">
@@ -206,7 +210,11 @@
             <span>⭐ 4.9 rating</span>
           </div>
           <p class="offer-forever">⏱ Lifetime access</p>
-          <button type="button" class="offer-btn">Get full system for $200 →</button>
+          <button type="button" class="offer-btn" data-product-type="pro">Get full system for $200 →</button>
+          <div id="paypalProWrap" class="paypal-inline-checkout light" hidden>
+            <div id="paypalProStatus" class="payment-status light" aria-live="polite"></div>
+            <div id="paypalProButtons"></div>
+          </div>
           <p class="offer-guarantee">🛡 14-day money back guarantee</p>
         </section>
 
@@ -272,6 +280,8 @@
 
     <script>
       window.GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxeNerxLULDZhYWzp1ZuOBMFJOaWV0ki5BUdlo6smnGHmoCrJ0LE0QMQFUnBlEUKyCS/exec";
+      window.PAYPAL_CLIENT_ID = "AStKDmgGsh3ivwaN-KhliA10wX-TugzSsmxaU_Xx0mNOnVQPIzPwiMy_qegH-hH6RoZRcC4M4ri6V3bs";
+      window.PAYPAL_API_BASE = window.PAYPAL_API_BASE || "";
     </script>
     <script src="./script.js"></script>
   </body>

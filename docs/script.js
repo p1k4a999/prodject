@@ -1,4 +1,28 @@
 const GOOGLE_SCRIPT_URL = window.GOOGLE_SCRIPT_URL || '';
+const PAYPAL_CLIENT_ID = window.PAYPAL_CLIENT_ID || '';
+const PAYPAL_API_BASE = window.PAYPAL_API_BASE || '';
+
+const PAYPAL_PRODUCTS = {
+  basic: {
+    amount: '20.00',
+    buttonSelector: '.thank-cta',
+    wrapId: 'paypalBasicWrap',
+    containerId: 'paypalBasicButtons',
+    statusId: 'paypalBasicStatus',
+    successMessage: '✅ Payment received. Your FULL SYSTEM access is confirmed.'
+  },
+  pro: {
+    amount: '200.00',
+    buttonSelector: '.offer-btn',
+    wrapId: 'paypalProWrap',
+    containerId: 'paypalProButtons',
+    statusId: 'paypalProStatus',
+    successMessage: '✅ Payment received. Your PRO access is confirmed.'
+  }
+};
+
+let paypalSdkPromise = null;
+const paypalButtonsReady = new Set();
 
 const LANGUAGE_MAP = {
   pl: 'PL',
@@ -115,6 +139,130 @@ function closeThankYou() {
 }
 
 document.getElementById('backToLanding')?.addEventListener('click', closeThankYou);
+
+function getPaypalEndpoint(path) {
+  return `${PAYPAL_API_BASE}${path}`;
+}
+
+function getPaymentUi(productType) {
+  const config = PAYPAL_PRODUCTS[productType];
+  if (!config) throw new Error('Unknown product type');
+  return {
+    config,
+    button: document.querySelector(config.buttonSelector),
+    wrap: document.getElementById(config.wrapId),
+    container: document.getElementById(config.containerId),
+    status: document.getElementById(config.statusId)
+  };
+}
+
+function setPaymentStatus(statusEl, message, type = '') {
+  if (!statusEl) return;
+  statusEl.textContent = message || '';
+  statusEl.classList.remove('success', 'error');
+  if (type) statusEl.classList.add(type);
+}
+
+function loadPayPalSdk() {
+  if (window.paypal) return Promise.resolve(window.paypal);
+  if (paypalSdkPromise) return paypalSdkPromise;
+  if (!PAYPAL_CLIENT_ID) return Promise.reject(new Error('Missing PAYPAL_CLIENT_ID'));
+
+  paypalSdkPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(PAYPAL_CLIENT_ID)}&currency=USD&intent=capture&components=buttons`;
+    script.async = true;
+    script.onload = () => window.paypal ? resolve(window.paypal) : reject(new Error('PayPal SDK did not initialize'));
+    script.onerror = () => reject(new Error('Failed to load PayPal SDK'));
+    document.head.appendChild(script);
+  });
+
+  return paypalSdkPromise;
+}
+
+async function createPayPalOrder(productType) {
+  const response = await fetch(getPaypalEndpoint('/api/paypal/create-order'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ productType })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok || !result?.id) {
+    throw new Error(result?.detail || result?.message || 'Could not create PayPal order');
+  }
+  return result.id;
+}
+
+async function capturePayPalOrder(orderID, productType) {
+  const response = await fetch(getPaypalEndpoint('/api/paypal/capture-order'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ orderID, productType })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok || !result?.status) {
+    throw new Error(result?.detail || result?.message || 'Could not capture PayPal order');
+  }
+  return result;
+}
+
+async function ensurePayPalButtons(productType) {
+  if (paypalButtonsReady.has(productType)) return;
+  const { container, status, config } = getPaymentUi(productType);
+  if (!container) throw new Error('Missing PayPal container');
+
+  const paypal = await loadPayPalSdk();
+  await paypal.Buttons({
+    style: {
+      layout: 'vertical',
+      shape: 'pill',
+      height: 46,
+      label: 'paypal'
+    },
+    createOrder: () => createPayPalOrder(productType),
+    onApprove: async (data) => {
+      setPaymentStatus(status, 'Capturing payment...', '');
+      const result = await capturePayPalOrder(data.orderID, productType);
+      setPaymentStatus(status, config.successMessage, 'success');
+      const triggerButton = document.querySelector(config.buttonSelector);
+      if (triggerButton) {
+        triggerButton.disabled = true;
+        triggerButton.textContent = productType === 'basic' ? 'FULL SYSTEM unlocked ✓' : 'PRO unlocked ✓';
+      }
+      return result;
+    },
+    onError: (error) => {
+      console.error('[paypal] checkout error', error);
+      setPaymentStatus(status, `⚠️ ${error?.message || 'PayPal checkout failed. Please try again.'}`, 'error');
+    },
+    onCancel: () => {
+      setPaymentStatus(status, 'Payment was canceled. You can try again anytime.', '');
+    }
+  }).render(container);
+
+  paypalButtonsReady.add(productType);
+}
+
+async function startPayPalCheckout(productType) {
+  const { wrap, status } = getPaymentUi(productType);
+  if (!wrap) return;
+  wrap.hidden = false;
+  setPaymentStatus(status, 'Loading secure PayPal checkout...', '');
+
+  try {
+    await ensurePayPalButtons(productType);
+    setPaymentStatus(status, 'Complete the payment in the PayPal popup.', '');
+    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } catch (error) {
+    console.error('[paypal] init error', error);
+    setPaymentStatus(status, `⚠️ ${error?.message || 'Unable to start PayPal checkout.'}`, 'error');
+  }
+}
+
+Object.keys(PAYPAL_PRODUCTS).forEach((productType) => {
+  const { button } = getPaymentUi(productType);
+  button?.addEventListener('click', () => startPayPalCheckout(productType));
+});
 
 document.getElementById('mockForm')?.addEventListener('submit', async (event) => {
   event.preventDefault();

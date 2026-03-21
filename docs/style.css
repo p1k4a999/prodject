@@ -56,6 +56,7 @@ body.show-thankyou .thankyou-screen{display:block}
 .price{display:flex;align-items:baseline;gap:10px}.price s{color:#a8a29e}.price strong{font-size:38px}.price span{color:#059669}
 .thank-cta{width:100%;margin-top:10px}
 .basic-cta{width:100%;margin-top:10px;background:#111827}
+.paypal-inline-checkout{margin-top:12px;padding:14px;border:1px solid #d6d3d1;border-radius:16px;background:#fafaf9}.paypal-inline-checkout.light{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.22)}.payment-status{min-height:1.2em;margin:0 0 10px;color:#57534e;font-weight:600}.payment-status.success{color:#047857}.payment-status.error{color:#b91c1c}.payment-status.light{color:#ecfeff}.paypal-inline-checkout [data-funding-source]{min-height:44px}
 .back-link{display:block;margin:12px auto 0;background:none;border:0;color:#57534e;text-decoration:underline;cursor:pointer}
 body.show-thankyou .grain-overlay{display:none}
 .offer-panel{background:linear-gradient(145deg,#065f46,#0f766e);color:#ecfeff;border-radius:18px;padding:26px 24px;margin:18px 0}

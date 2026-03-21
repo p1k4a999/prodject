@@ -2,7 +2,7 @@ from fastapi import FastAPI, APIRouter, HTTPException
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import RedirectResponse
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
@@ -262,11 +262,12 @@ async def root():
 app.include_router(api_router)
 
 if DOCS_DIR.exists():
-    app.mount("/docs", StaticFiles(directory=str(DOCS_DIR), html=True), name="docs")
+    @app.get("/docs", include_in_schema=False)
+    @app.get("/docs/", include_in_schema=False)
+    async def redirect_docs_root():
+        return RedirectResponse(url="/", status_code=307)
 
-    @app.get("/", include_in_schema=False)
-    async def serve_docs_index():
-        return FileResponse(DOCS_DIR / "index.html")
+    app.mount("/", StaticFiles(directory=str(DOCS_DIR), html=True), name="docs-root")
 
 app.add_middleware(
     CORSMiddleware,

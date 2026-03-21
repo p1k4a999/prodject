@@ -8,8 +8,8 @@
  */
 
 const ROOT_FOLDER_ID = 'PASTE_GOOGLE_DRIVE_FOLDER_ID_HERE';
-const SCRIPT_VERSION = 'v4-country-tabs-2026-03-20';
-const HEADERS = ['name', 'surname', 'phone', 'about', 'language', 'country', 'source', 'date', 'time', 'created_at'];
+const SCRIPT_VERSION = 'v5-ip-and-user-agent-2026-03-21';
+const HEADERS = ['name', 'surname', 'phone', 'about', 'language', 'country', 'ip', 'user_agent', 'source', 'date', 'time', 'created_at'];
 
 function doPost(e) {
   try {
@@ -35,6 +35,8 @@ function doPost(e) {
       payload.about || '',
       payload.language || '',
       tab,
+      payload.ip || '',
+      payload.user_agent || '',
       payload.source || 'landing-page',
       payload.date || '',
       payload.time || '',

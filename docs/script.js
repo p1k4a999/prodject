@@ -10,6 +10,7 @@ const LANGUAGE_MAP = {
 };
 
 let countryCodeCache = '';
+let ipAddressCache = '';
 
 function detectLanguageCode() {
   const htmlLang = (document.documentElement.getAttribute('lang') || '').toLowerCase();
@@ -44,6 +45,20 @@ async function detectCountryByIp() {
   } catch (_) {
     countryCodeCache = 'UN';
     return countryCodeCache;
+  }
+}
+
+async function detectIpAddress() {
+  if (ipAddressCache) return ipAddressCache;
+  try {
+    const response = await fetch('https://api.ipify.org?format=json', { method: 'GET' });
+    if (!response.ok) throw new Error('ipify failed');
+    const data = await response.json();
+    ipAddressCache = String(data?.ip || '').trim() || 'unknown';
+    return ipAddressCache;
+  } catch (_) {
+    ipAddressCache = 'unknown';
+    return ipAddressCache;
   }
 }
 
@@ -138,6 +153,7 @@ document.getElementById('mockForm')?.addEventListener('submit', async (event) =>
 
   try {
     const country = await detectCountryByIp();
+    const ip = await detectIpAddress();
     const now = new Date();
 
     const payload = {
@@ -147,6 +163,8 @@ document.getElementById('mockForm')?.addEventListener('submit', async (event) =>
       about,
       language,
       country,
+      ip,
+      user_agent: navigator.userAgent || 'unknown',
       source: detectTrafficSource(),
       date: now.toLocaleDateString(),
       time: now.toLocaleTimeString()

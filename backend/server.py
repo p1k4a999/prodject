@@ -18,10 +18,11 @@ ROOT_DIR = Path(__file__).parent
 DOCS_DIR = ROOT_DIR.parent / "docs"
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+# MongoDB connection (optional at import/startup time so the app can boot on Render)
+mongo_url = os.environ.get('MONGO_URL')
+db_name = os.environ.get('DB_NAME')
+client = AsyncIOMotorClient(mongo_url) if mongo_url else None
+db = client[db_name] if client and db_name else None
 
 # Create the main app without a prefix
 app = FastAPI()
@@ -106,13 +107,20 @@ def get_paypal_product(product_type: str) -> dict:
     return product
 
 
+def get_leads_collection():
+    if db is None:
+        raise HTTPException(status_code=503, detail="Database is not configured. Set MONGO_URL and DB_NAME.")
+    return db.leads
+
+
 # Lead endpoints
 @api_router.post("/leads", response_model=LeadResponse)
 async def create_lead(input: LeadCreate):
     """Create a new lead from the landing page form"""
     try:
         # Check if email already exists
-        existing = await db.leads.find_one({"email": input.email}, {"_id": 0})
+        leads = get_leads_collection()
+        existing = await leads.find_one({"email": input.email}, {"_id": 0})
         if existing:
             return LeadResponse(
                 id=existing["id"],
@@ -127,7 +135,7 @@ async def create_lead(input: LeadCreate):
         doc = lead_obj.model_dump()
         doc['created_at'] = doc['created_at'].isoformat()
         
-        await db.leads.insert_one(doc)
+        await leads.insert_one(doc)
         
         return LeadResponse(
             id=lead_obj.id,
@@ -144,7 +152,8 @@ async def create_lead(input: LeadCreate):
 @api_router.get("/leads", response_model=List[Lead])
 async def get_leads():
     """Get all leads (admin endpoint)"""
-    leads = await db.leads.find({}, {"_id": 0}).to_list(1000)
+    leads_collection = get_leads_collection()
+    leads = await leads_collection.find({}, {"_id": 0}).to_list(1000)
     for lead in leads:
         if isinstance(lead.get('created_at'), str):
             lead['created_at'] = datetime.fromisoformat(lead['created_at'])
@@ -153,10 +162,11 @@ async def get_leads():
 @api_router.get("/leads/stats", response_model=StatsResponse)
 async def get_lead_stats():
     """Get lead statistics"""
-    total = await db.leads.count_documents({})
+    leads_collection = get_leads_collection()
+    total = await leads_collection.count_documents({})
     
     today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
-    today = await db.leads.count_documents({
+    today = await leads_collection.count_documents({
         "created_at": {"$gte": today_start.isoformat()}
     })
     
@@ -275,4 +285,5 @@ logger = logging.getLogger(__name__)
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    client.close()
+    if client is not None:
+        client.close()

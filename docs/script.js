@@ -186,10 +186,36 @@ async function createPayPalOrder(productType) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ productType })
   });
-  const result = await response.json().catch(() => ({}));
-  if (!response.ok || !result?.id) {
-    throw new Error(result?.detail || result?.message || 'Could not create PayPal order');
+
+  const rawText = await response.text();
+  let result = {};
+  try {
+    result = rawText ? JSON.parse(rawText) : {};
+  } catch (_) {
+    result = {};
   }
+
+  console.log('[paypal] create-order backend status:', response.status);
+  console.log('[paypal] create-order backend raw body:', rawText);
+
+  if (!response.ok || !result?.id) {
+    const detail = result?.detail;
+    const paypalBody = typeof detail === 'object' ? detail?.paypal_body : '';
+    const paypalStatus = typeof detail === 'object' ? detail?.paypal_status : '';
+    const detailMessage = typeof detail === 'object'
+      ? `${detail?.message || 'PayPal create order failed'}${paypalStatus ? ` | PayPal status: ${paypalStatus}` : ''}${paypalBody ? ` | PayPal body: ${paypalBody}` : ''}`
+      : (detail || result?.message || rawText || 'Could not create PayPal order');
+
+    console.error('[paypal] create-order full error:', {
+      backendStatus: response.status,
+      backendBody: rawText,
+      paypalStatus,
+      paypalBody
+    });
+
+    throw new Error(`create-order failed | backend status: ${response.status} | ${detailMessage}`);
+  }
+
   return result.id;
 }
 
@@ -255,7 +281,9 @@ async function startPayPalCheckout(productType) {
     wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (error) {
     console.error('[paypal] init error', error);
-    setPaymentStatus(status, `⚠️ ${error?.message || 'Unable to start PayPal checkout.'}`, 'error');
+    const fullMessage = error?.message || 'Unable to start PayPal checkout.';
+    console.error('[paypal] visible checkout error message:', fullMessage);
+    setPaymentStatus(status, `⚠️ ${fullMessage}`, 'error');
   }
 }
 

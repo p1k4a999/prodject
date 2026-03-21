@@ -190,7 +190,14 @@ async def create_paypal_order(input: PayPalOrderRequest):
         timeout=30,
     )
     if not response.ok:
-        raise HTTPException(status_code=502, detail=f"PayPal create order failed: {response.text}")
+        raise HTTPException(
+            status_code=502,
+            detail={
+                "message": "PayPal create order failed",
+                "paypal_status": response.status_code,
+                "paypal_body": response.text,
+            },
+        )
 
     return response.json()
 
@@ -209,7 +216,14 @@ async def capture_paypal_order(input: PayPalCaptureRequest):
         timeout=30,
     )
     if not response.ok:
-        raise HTTPException(status_code=502, detail=f"PayPal capture failed: {response.text}")
+        raise HTTPException(
+            status_code=502,
+            detail={
+                "message": "PayPal capture failed",
+                "paypal_status": response.status_code,
+                "paypal_body": response.text,
+            },
+        )
 
     payload = response.json()
     amount_value = (((payload.get("purchase_units") or [{}])[0].get("payments") or {}).get("captures") or [{}])[0].get("amount", {}).get("value")

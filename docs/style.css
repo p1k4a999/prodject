@@ -82,3 +82,5 @@ body.show-thankyou .grain-overlay{display:none}
 .quote-card{margin:14px 0 8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:18px 20px;color:#444;text-align:center;font-style:italic}
 .quote-card footer{margin-top:10px;font-style:normal;color:#666}
 @media (max-width:900px){.offer-panel h3{font-size:30px}.offer-grid{grid-template-columns:1fr 1fr;gap:8px 12px;font-size:15px}.offer-stats{font-size:15px}.offer-btn{font-size:1rem}.results-track{gap:12px;animation-duration:22s}.result-shot,.result-shot.wide{width:150px;flex-basis:150px}.result-shot{height:188px}.result-shot.tall{height:220px}.result-shot.wide{height:188px}}
+
+.delivery-page{display:block;position:static;min-height:100vh;padding:32px 20px;background:#f5f5f4}.force-visible{display:block}.delivery-page .thankyou-shell{padding-bottom:0}

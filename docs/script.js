@@ -199,6 +199,7 @@ async function createPayPalOrder(productType) {
 
   console.log('[paypal] create-order backend status:', response.status);
   console.log('[paypal] create-order backend raw body:', rawText);
+  console.log('[paypal] create-order parsed response:', result);
 
   if (!response.ok || !result?.id) {
     const detail = result?.detail;
@@ -230,11 +231,42 @@ async function capturePayPalOrder(orderID, productType) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ orderID, productType })
   });
-  const result = await response.json().catch(() => ({}));
+  const rawText = await response.text();
+  let result = {};
+  try {
+    result = rawText ? JSON.parse(rawText) : {};
+  } catch (_) {
+    result = {};
+  }
+
+  console.log('[paypal] capture-order backend status:', response.status);
+  console.log('[paypal] capture-order backend raw body:', rawText);
+  console.log('[paypal] capture-order parsed response:', result);
+
   if (!response.ok || !result?.status) {
-    throw new Error(result?.detail || result?.message || 'Could not capture PayPal order');
+    throw new Error(result?.detail || result?.message || rawText || 'Could not capture PayPal order');
   }
   return result;
+}
+
+function getSuccessRedirectPath(productType) {
+  return productType === 'pro' ? '/thank-you-pro' : '/thank-you-basic';
+}
+
+function redirectToProductPage(productType, statusEl) {
+  const target = getSuccessRedirectPath(productType);
+  console.log('[paypal] final redirect decision:', { productType, target });
+  setPaymentStatus(statusEl, `✅ Payment successful. Redirecting you to ${target}...`, 'success');
+
+  try {
+    window.location.assign(target);
+    window.setTimeout(() => {
+      setPaymentStatus(statusEl, `✅ Payment captured. If you are not redirected automatically, open ${target}`, 'success');
+    }, 1500);
+  } catch (error) {
+    console.error('[paypal] redirect failed', error);
+    setPaymentStatus(statusEl, `✅ Payment captured, but redirect failed. Open ${target} manually.`, 'error');
+  }
 }
 
 async function ensurePayPalButtons(productType) {
@@ -254,12 +286,14 @@ async function ensurePayPalButtons(productType) {
     onApprove: async (data) => {
       setPaymentStatus(status, 'Capturing payment...', '');
       const result = await capturePayPalOrder(data.orderID, productType);
-      setPaymentStatus(status, config.successMessage, 'success');
+      setPaymentStatus(status, `${config.successMessage} Redirecting...`, 'success');
+      console.log('[paypal] capture success result:', result);
       const triggerButton = document.querySelector(config.buttonSelector);
       if (triggerButton) {
         triggerButton.disabled = true;
         triggerButton.textContent = productType === 'basic' ? 'FULL SYSTEM unlocked ✓' : 'PRO unlocked ✓';
       }
+      redirectToProductPage(productType, status);
       return result;
     },
     onError: (error) => {

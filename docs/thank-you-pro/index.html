@@ -12,70 +12,144 @@
         <div class="thankyou-header">
           <div class="checkmark">✓</div>
           <h1>Freelance Start PRO unlocked</h1>
-          <p>Your PRO purchase is confirmed. All four training stages are unlocked below directly on the site.</p>
+          <p>Your PRO purchase is confirmed. All four training stages are available below in one cleaner on-site access page.</p>
         </div>
         <section class="offer-panel">
           <h3>Freelance Start PRO unlocked</h3>
-          <p class="offer-subtitle">Your video library by stages</p>
+          <p class="offer-subtitle">Your training hub by stage</p>
           <div class="offer-grid">
             <p>✓ Payment confirmed</p>
-            <p>✓ 4 stage folders unlocked</p>
-            <p>✓ Videos playable on-site</p>
-            <p>✓ Download access inside page</p>
+            <p>✓ 4 stages unlocked</p>
+            <p>✓ Cleaner on-site access</p>
+            <p>✓ One preview area</p>
             <p>✓ Step-by-step order</p>
-            <p>✓ Mobile-friendly access</p>
+            <p>✓ Mobile-friendly layout</p>
           </div>
         </section>
 
-        <section class="delivery-library">
+        <section class="delivery-player" aria-label="Course delivery player">
+          <article class="delivery-player-main">
+            <div class="delivery-player-copy">
+              <div>
+                <p id="stage-pill" class="pill green">STAGE 1</p>
+                <h2 id="stage-title">Stage 1 — Foundation videos</h2>
+                <p id="stage-description">Start here and move stage by stage. Use the left panel to switch your active stage while keeping everything inside one clean delivery page.</p>
+                <div class="delivery-player-badges">
+                  <span>4 structured stages</span>
+                  <span class="alt">3 videos inside each stage folder</span>
+                </div>
+              </div>
+            </div>
+            <iframe id="delivery-frame" class="delivery-frame" loading="lazy" sandbox="allow-scripts allow-same-origin allow-downloads" referrerpolicy="no-referrer" src="https://drive.google.com/embeddedfolderview?id=1D6sLlrACWMWc-Dl_jWo4kUqc7Sm7tX0b#grid" title="Stage 1 — Foundation videos"></iframe>
+            <div class="delivery-player-actions">
+              <a id="stage-open-link" class="delivery-link-btn" href="https://drive.google.com/drive/folders/1D6sLlrACWMWc-Dl_jWo4kUqc7Sm7tX0b" target="_blank" rel="noopener noreferrer">Open this stage in Google Drive</a>
+              <a class="delivery-link-btn secondary" href="#stage-library">Jump to all stages</a>
+            </div>
+          </article>
+          <aside class="delivery-player-sidebar">
+            <p class="delivery-stage-label">STAGE SELECTOR</p>
+            <div class="delivery-stage-list" id="stage-list">
+              <button class="delivery-stage-button active" type="button" data-stage="1" data-title="Stage 1 — Foundation videos" data-description="Start here and build your base before moving to the more advanced system, client acquisition, and monetization stages." data-embed="https://drive.google.com/embeddedfolderview?id=1D6sLlrACWMWc-Dl_jWo4kUqc7Sm7tX0b#grid" data-open="https://drive.google.com/drive/folders/1D6sLlrACWMWc-Dl_jWo4kUqc7Sm7tX0b">
+                <strong>Stage 1 — Foundation</strong>
+                <span>3 videos · first steps and orientation</span>
+                <small>Recommended starting point</small>
+              </button>
+              <button class="delivery-stage-button" type="button" data-stage="2" data-title="Stage 2 — Core system videos" data-description="Move into the main system once you finish the foundation stage. Keep the same on-page preview area while switching stages." data-embed="https://drive.google.com/embeddedfolderview?id=1NfEqahjwJ_0fQ7UZEUbvlqD6RUjCF4hW#grid" data-open="https://drive.google.com/drive/folders/1NfEqahjwJ_0fQ7UZEUbvlqD6RUjCF4hW">
+                <strong>Stage 2 — Core system</strong>
+                <span>3 videos · main workflow and execution</span>
+                <small>Continue after Stage 1</small>
+              </button>
+              <button class="delivery-stage-button" type="button" data-stage="3" data-title="Stage 3 — Client acquisition videos" data-description="Use this stage when you are ready to focus on finding clients and turning the system into real outreach and conversations." data-embed="https://drive.google.com/embeddedfolderview?id=1vJ8aOA7x7k_K-yqO4_jXo14QbbCo2UPz#grid" data-open="https://drive.google.com/drive/folders/1vJ8aOA7x7k_K-yqO4_jXo14QbbCo2UPz">
+                <strong>Stage 3 — Client acquisition</strong>
+                <span>3 videos · outreach and client flow</span>
+                <small>Focus on getting conversations</small>
+              </button>
+              <button class="delivery-stage-button" type="button" data-stage="4" data-title="Stage 4 — Platforms and first money" data-description="Finish with platform setup and first revenue actions. This stage is designed as the final step after the earlier training sequence." data-embed="https://drive.google.com/embeddedfolderview?id=1jZTig8PkvGbXLtCZQPUQ_hr5BBGTRgtl#grid" data-open="https://drive.google.com/drive/folders/1jZTig8PkvGbXLtCZQPUQ_hr5BBGTRgtl">
+                <strong>Stage 4 — Platforms and first money</strong>
+                <span>3 videos · setup and first income actions</span>
+                <small>Final stage of the system</small>
+              </button>
+            </div>
+            <div class="delivery-player-actions">
+              <a id="sidebar-open-link" class="delivery-link-btn secondary" href="https://drive.google.com/drive/folders/1D6sLlrACWMWc-Dl_jWo4kUqc7Sm7tX0b" target="_blank" rel="noopener noreferrer">Open active stage</a>
+            </div>
+            <ul class="delivery-tips">
+              <li>Use the stage selector to swap the active library without opening a separate page.</li>
+              <li>Each stage contains 3 videos inside the linked folder.</li>
+              <li>If you want direct per-video playback and downloads later, replace each folder source with individual hosted video URLs.</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section id="stage-library" class="delivery-library delivery-library-grid">
           <article class="delivery-card">
             <div class="delivery-card-head">
               <div>
                 <p class="pill green">STAGE 1</p>
-                <h3>Stage 1 — Foundation videos</h3>
+                <h3>Foundation videos</h3>
               </div>
             </div>
-            <p class="delivery-note">Watch the stage inside the preview area below. Each stage contains 3 videos and is presented in a cleaner visual library format.</p>
-            <div class="delivery-stage-meta"><span>3 videos included</span><span>Preview + play on site</span><span>Download controls inside player</span></div>
-            <iframe class="delivery-frame" loading="lazy" sandbox="allow-scripts allow-same-origin allow-downloads" referrerpolicy="no-referrer" src="https://drive.google.com/embeddedfolderview?id=1D6sLlrACWMWc-Dl_jWo4kUqc7Sm7tX0b#grid" title="Stage 1 — Foundation videos"></iframe>
+            <p class="delivery-note">Begin here to understand the structure and set your baseline before moving into the full system.</p>
+            <div class="delivery-stage-meta"><span>3 videos included</span><span>Opens in the main preview</span><span>Best first step</span></div>
           </article>
           <article class="delivery-card">
             <div class="delivery-card-head">
               <div>
                 <p class="pill green">STAGE 2</p>
-                <h3>Stage 2 — Core system videos</h3>
+                <h3>Core system videos</h3>
               </div>
             </div>
-            <p class="delivery-note">Watch the stage inside the preview area below. Each stage contains 3 videos and is presented in a cleaner visual library format.</p>
-            <div class="delivery-stage-meta"><span>3 videos included</span><span>Preview + play on site</span><span>Download controls inside player</span></div>
-            <iframe class="delivery-frame" loading="lazy" sandbox="allow-scripts allow-same-origin allow-downloads" referrerpolicy="no-referrer" src="https://drive.google.com/embeddedfolderview?id=1NfEqahjwJ_0fQ7UZEUbvlqD6RUjCF4hW#grid" title="Stage 2 — Core system videos"></iframe>
+            <p class="delivery-note">Continue into the core training once the foundation is complete and you are ready to follow the main workflow.</p>
+            <div class="delivery-stage-meta"><span>3 videos included</span><span>Opens in the main preview</span><span>Main execution stage</span></div>
           </article>
           <article class="delivery-card">
             <div class="delivery-card-head">
               <div>
                 <p class="pill green">STAGE 3</p>
-                <h3>Stage 3 — Client acquisition videos</h3>
+                <h3>Client acquisition videos</h3>
               </div>
             </div>
-            <p class="delivery-note">Watch the stage inside the preview area below. Each stage contains 3 videos and is presented in a cleaner visual library format.</p>
-            <div class="delivery-stage-meta"><span>3 videos included</span><span>Preview + play on site</span><span>Download controls inside player</span></div>
-            <iframe class="delivery-frame" loading="lazy" sandbox="allow-scripts allow-same-origin allow-downloads" referrerpolicy="no-referrer" src="https://drive.google.com/embeddedfolderview?id=1vJ8aOA7x7k_K-yqO4_jXo14QbbCo2UPz#grid" title="Stage 3 — Client acquisition videos"></iframe>
+            <p class="delivery-note">Work through the acquisition module when you are ready to turn your system into real client conversations.</p>
+            <div class="delivery-stage-meta"><span>3 videos included</span><span>Opens in the main preview</span><span>Client-getting focus</span></div>
           </article>
           <article class="delivery-card">
             <div class="delivery-card-head">
               <div>
                 <p class="pill green">STAGE 4</p>
-                <h3>Stage 4 — Platforms and first money</h3>
+                <h3>Platforms and first money</h3>
               </div>
             </div>
-            <p class="delivery-note">Watch the stage inside the preview area below. Each stage contains 3 videos and is presented in a cleaner visual library format.</p>
-            <div class="delivery-stage-meta"><span>3 videos included</span><span>Preview + play on site</span><span>Download controls inside player</span></div>
-            <iframe class="delivery-frame" loading="lazy" sandbox="allow-scripts allow-same-origin allow-downloads" referrerpolicy="no-referrer" src="https://drive.google.com/embeddedfolderview?id=1jZTig8PkvGbXLtCZQPUQ_hr5BBGTRgtl#grid" title="Stage 4 — Platforms and first money"></iframe>
+            <p class="delivery-note">Finish with the setup and monetization stage to move from training into your first earning actions.</p>
+            <div class="delivery-stage-meta"><span>3 videos included</span><span>Opens in the main preview</span><span>Final stage</span></div>
           </article>
         </section>
 
-        <blockquote class="quote-card">Open each stage in order. All four folders are embedded on the site below for direct access after payment.</blockquote>
+        <blockquote class="quote-card">Use the selector to keep everything in one delivery page. For true per-video playback and downloads, swap the stage folders for direct video file or YouTube embed URLs later.</blockquote>
       </div>
     </section>
+    <script>
+      const buttons = Array.from(document.querySelectorAll('.delivery-stage-button'));
+      const frame = document.getElementById('delivery-frame');
+      const pill = document.getElementById('stage-pill');
+      const title = document.getElementById('stage-title');
+      const description = document.getElementById('stage-description');
+      const openLink = document.getElementById('stage-open-link');
+      const sidebarOpenLink = document.getElementById('sidebar-open-link');
+
+      const activateStage = (button) => {
+        buttons.forEach((item) => item.classList.toggle('active', item === button));
+        pill.textContent = `STAGE ${button.dataset.stage}`;
+        title.textContent = button.dataset.title;
+        description.textContent = button.dataset.description;
+        frame.src = button.dataset.embed;
+        frame.title = button.dataset.title;
+        openLink.href = button.dataset.open;
+        sidebarOpenLink.href = button.dataset.open;
+      };
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => activateStage(button));
+      });
+    </script>
   </body>
 </html>

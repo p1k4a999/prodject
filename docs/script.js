@@ -1,28 +1,15 @@
 const GOOGLE_SCRIPT_URL = window.GOOGLE_SCRIPT_URL || '';
-const PAYPAL_CLIENT_ID = window.PAYPAL_CLIENT_ID || '';
-const PAYPAL_API_BASE = window.PAYPAL_API_BASE || '';
 
-const PAYPAL_PRODUCTS = {
+const PRODUCTS = {
   basic: {
-    amount: '20.00',
     buttonSelector: '.thank-cta',
-    wrapId: 'paypalBasicWrap',
-    containerId: 'paypalBasicButtons',
     statusId: 'paypalBasicStatus',
-    successMessage: '✅ Payment received. Your FULL SYSTEM access is confirmed.'
   },
   pro: {
-    amount: '200.00',
     buttonSelector: '.offer-btn',
-    wrapId: 'paypalProWrap',
-    containerId: 'paypalProButtons',
     statusId: 'paypalProStatus',
-    successMessage: '✅ Payment received. Your PRO access is confirmed.'
   }
 };
-
-let paypalSdkPromise = null;
-const paypalButtonsReady = new Set();
 
 const LANGUAGE_MAP = {
   pl: 'PL',
@@ -125,11 +112,8 @@ document.getElementById('scrollToForm')?.addEventListener('click', () => {
 
 const thankYouScreen = document.getElementById('thankYouScreen');
 const thankYouName = document.getElementById('thankYouName');
-const thankYouEmail = document.getElementById('thankYouEmail');
-
 function openThankYou(name, email) {
   if (thankYouName) thankYouName.textContent = name || 'friend';
-  if (thankYouEmail) thankYouEmail.textContent = `Check your inbox (${email || 'your email'})`;
   document.body.classList.add('show-thankyou');
   thankYouScreen?.scrollTo?.(0, 0);
 }
@@ -140,195 +124,35 @@ function closeThankYou() {
 
 document.getElementById('backToLanding')?.addEventListener('click', closeThankYou);
 
-function getPaypalEndpoint(path) {
-  const endpoint = `${PAYPAL_API_BASE}${path}`;
-  console.log('[paypal] resolved endpoint:', endpoint);
-  return endpoint;
+// ── PayPal.Me payment flow ──────────────────────────────
+
+const PAYPAL_ME = 'https://paypal.me/Frelances';
+
+const PAYPAL_AMOUNTS = {
+  basic: '20',
+  pro: '200',
+};
+
+function startPaypalMeCheckout(productType) {
+  const amount = PAYPAL_AMOUNTS[productType];
+  if (!amount) return;
+  window.open(`${PAYPAL_ME}/${amount}USD`, '_blank');
 }
 
-function getPaymentUi(productType) {
-  const config = PAYPAL_PRODUCTS[productType];
-  if (!config) throw new Error('Unknown product type');
-  return {
-    config,
-    button: document.querySelector(config.buttonSelector),
-    wrap: document.getElementById(config.wrapId),
-    container: document.getElementById(config.containerId),
-    status: document.getElementById(config.statusId)
-  };
-}
+// Bind payment buttons
+Object.keys(PRODUCTS).forEach((productType) => {
+  const config = PRODUCTS[productType];
+  const button = document.querySelector(config.buttonSelector);
+  button?.addEventListener('click', () => startPaypalMeCheckout(productType));
+});
 
-function setPaymentStatus(statusEl, message, type = '') {
-  if (!statusEl) return;
-  statusEl.textContent = message || '';
-  statusEl.classList.remove('success', 'error');
-  if (type) statusEl.classList.add(type);
-}
-
-function loadPayPalSdk() {
-  if (window.paypal) return Promise.resolve(window.paypal);
-  if (paypalSdkPromise) return paypalSdkPromise;
-  if (!PAYPAL_CLIENT_ID) return Promise.reject(new Error('Missing PAYPAL_CLIENT_ID'));
-
-  paypalSdkPromise = new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(PAYPAL_CLIENT_ID)}&currency=USD&intent=capture&components=buttons`;
-    script.async = true;
-    script.onload = () => window.paypal ? resolve(window.paypal) : reject(new Error('PayPal SDK did not initialize'));
-    script.onerror = () => reject(new Error('Failed to load PayPal SDK'));
-    document.head.appendChild(script);
-  });
-
-  return paypalSdkPromise;
-}
-
-async function createPayPalOrder(productType) {
-  const response = await fetch(getPaypalEndpoint('/api/paypal/create-order'), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ productType })
-  });
-
-  const rawText = await response.text();
-  let result = {};
-  try {
-    result = rawText ? JSON.parse(rawText) : {};
-  } catch (_) {
-    result = {};
-  }
-
-  console.log('[paypal] create-order backend status:', response.status);
-  console.log('[paypal] create-order backend raw body:', rawText);
-  console.log('[paypal] create-order parsed response:', result);
-
-  if (!response.ok || !result?.id) {
-    const detail = result?.detail;
-    const paypalBody = typeof detail === 'object' ? detail?.paypal_body : '';
-    const paypalStatus = typeof detail === 'object' ? detail?.paypal_status : '';
-    const detailMessage = typeof detail === 'object'
-      ? `${detail?.message || 'PayPal create order failed'}${paypalStatus ? ` | PayPal status: ${paypalStatus}` : ''}${paypalBody ? ` | PayPal body: ${paypalBody}` : ''}`
-      : (detail || result?.message || rawText || 'Could not create PayPal order');
-
-    console.error('[paypal] create-order full error:', {
-      backendStatus: response.status,
-      backendBody: rawText,
-      paypalStatus,
-      paypalBody
-    });
-
-    const methodHint = response.status === 405
-      ? ' | HTTP 405 means this host is not accepting POST on /api/paypal/create-order. If the page is opened without the real backend, deploy/use the backend host and set PAYPAL_API_BASE.'
-      : '';
-    throw new Error(`create-order failed | backend status: ${response.status} | ${detailMessage}${methodHint}`);
-  }
-
-  return result.id;
-}
-
-async function capturePayPalOrder(orderID, productType) {
-  const response = await fetch(getPaypalEndpoint('/api/paypal/capture-order'), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ orderID, productType })
-  });
-  const rawText = await response.text();
-  let result = {};
-  try {
-    result = rawText ? JSON.parse(rawText) : {};
-  } catch (_) {
-    result = {};
-  }
-
-  console.log('[paypal] capture-order backend status:', response.status);
-  console.log('[paypal] capture-order backend raw body:', rawText);
-  console.log('[paypal] capture-order parsed response:', result);
-
-  if (!response.ok || !result?.status) {
-    throw new Error(result?.detail || result?.message || rawText || 'Could not capture PayPal order');
-  }
-  return result;
-}
-
-function getSuccessRedirectPath(productType) {
-  return productType === 'pro' ? '/thank-you-pro' : '/thank-you-basic';
-}
-
-function redirectToProductPage(productType, statusEl) {
-  const target = getSuccessRedirectPath(productType);
-  console.log('[paypal] final redirect decision:', { productType, target });
-  setPaymentStatus(statusEl, `✅ Payment successful. Redirecting you to ${target}...`, 'success');
-
-  try {
-    window.location.assign(target);
-    window.setTimeout(() => {
-      setPaymentStatus(statusEl, `✅ Payment captured. If you are not redirected automatically, open ${target}`, 'success');
-    }, 1500);
-  } catch (error) {
-    console.error('[paypal] redirect failed', error);
-    setPaymentStatus(statusEl, `✅ Payment captured, but redirect failed. Open ${target} manually.`, 'error');
-  }
-}
-
-async function ensurePayPalButtons(productType) {
-  if (paypalButtonsReady.has(productType)) return;
-  const { container, status, config } = getPaymentUi(productType);
-  if (!container) throw new Error('Missing PayPal container');
-
-  const paypal = await loadPayPalSdk();
-  await paypal.Buttons({
-    style: {
-      layout: 'vertical',
-      shape: 'pill',
-      height: 46,
-      label: 'paypal'
-    },
-    createOrder: () => createPayPalOrder(productType),
-    onApprove: async (data) => {
-      setPaymentStatus(status, 'Capturing payment...', '');
-      const result = await capturePayPalOrder(data.orderID, productType);
-      setPaymentStatus(status, `${config.successMessage} Redirecting...`, 'success');
-      console.log('[paypal] capture success result:', result);
-      const triggerButton = document.querySelector(config.buttonSelector);
-      if (triggerButton) {
-        triggerButton.disabled = true;
-        triggerButton.textContent = productType === 'basic' ? 'FULL SYSTEM unlocked ✓' : 'PRO unlocked ✓';
-      }
-      redirectToProductPage(productType, status);
-      return result;
-    },
-    onError: (error) => {
-      console.error('[paypal] checkout error', error);
-      setPaymentStatus(status, `⚠️ ${error?.message || 'PayPal checkout failed. Please try again.'}`, 'error');
-    },
-    onCancel: () => {
-      setPaymentStatus(status, 'Payment was canceled. You can try again anytime.', '');
-    }
-  }).render(container);
-
-  paypalButtonsReady.add(productType);
-}
-
-async function startPayPalCheckout(productType) {
-  const { wrap, status } = getPaymentUi(productType);
-  if (!wrap) return;
-  wrap.hidden = false;
-  setPaymentStatus(status, 'Loading secure PayPal checkout...', '');
-
-  try {
-    await ensurePayPalButtons(productType);
-    setPaymentStatus(status, 'Complete the payment in the PayPal popup.', '');
-    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  } catch (error) {
-    console.error('[paypal] init error', error);
-    const fullMessage = error?.message || 'Unable to start PayPal checkout.';
-    console.error('[paypal] visible checkout error message:', fullMessage);
-    setPaymentStatus(status, `⚠️ ${fullMessage}`, 'error');
-  }
-}
-
-Object.keys(PAYPAL_PRODUCTS).forEach((productType) => {
-  const { button } = getPaymentUi(productType);
-  button?.addEventListener('click', () => startPayPalCheckout(productType));
+document.querySelector('.basic-cta')?.addEventListener('click', () => {
+  const link = document.createElement('a');
+  link.href = '/freelance_start_pack.pdf';
+  link.download = 'freelance_start_pack.pdf';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 });
 
 document.getElementById('mockForm')?.addEventListener('submit', async (event) => {
@@ -441,79 +265,73 @@ const testimonialFallbacks = [
   './assets/testimonial-6.svg'
 ];
 
-const testimonialsWithFallback = testimonials.map((item, index) => ({
-  ...item,
-  fallback: testimonialFallbacks[index % testimonialFallbacks.length]
-}));
+let testimonialIndex = 0;
+let testimonialInterval = null;
 
-const carousel = document.getElementById('testimonialCarousel');
-const dotsWrap = document.getElementById('testimonialDots');
-const cardsPerView = 3;
-const totalPages = Math.floor(testimonialsWithFallback.length / cardsPerView);
-let currentPage = Math.floor(Math.random() * totalPages);
-let timer;
+function getVisibleTestimonials() {
+  if (!testimonials.length) return [];
+  return [0, 1, 2].map((offset) => {
+    const item = testimonials[(testimonialIndex + offset) % testimonials.length];
+    return item;
+  });
+}
 
 function renderTestimonials() {
-  if (!carousel) return;
-  const startIndex = currentPage * cardsPerView;
-  const visible = testimonialsWithFallback.slice(startIndex, startIndex + cardsPerView);
-  carousel.innerHTML = visible
-    .map(
-      (item) => `<article class="card"><p>"${item.text}"</p><div class="person"><img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.onerror=null;this.src='${item.fallback}';" /><div><strong>${item.name}</strong><small>${item.role}</small></div></div></article>`
-    )
-    .join('');
+  const carousel = document.getElementById('testimonialCarousel');
+  const dotsWrap = document.getElementById('testimonialDots');
+  if (!carousel || !dotsWrap) return;
 
-  if (dotsWrap) {
-    dotsWrap.innerHTML = Array.from({ length: totalPages })
-      .map(
-        (_, index) => `<button type="button" class="${index === currentPage ? 'active' : ''}" data-index="${index}" aria-label="Go to testimonial page ${index + 1}"></button>`
-      )
-      .join('');
+  const visibleTestimonials = getVisibleTestimonials();
+  carousel.innerHTML = visibleTestimonials.map((item, idx) => {
+    const fallback = testimonialFallbacks[(testimonialIndex + idx) % testimonialFallbacks.length];
+    const safeName = item.name.replace(/"/g, '&quot;');
+    return `
+      <article class="card testimonial-card">
+        <div class="testimonial-quote-mark" aria-hidden="true">“</div>
+        <div class="testimonial-head">
+          <img class="testimonial-avatar" src="${item.image}" alt="${safeName}" loading="lazy" onerror="this.onerror=null;this.src='${fallback}';" />
+          <div>
+            <h3>${item.name}</h3>
+            <p>${item.role}</p>
+          </div>
+        </div>
+        <p>${item.text}</p>
+      </article>
+    `;
+  }).join('');
+
+  const dotCount = testimonials.length;
+  dotsWrap.innerHTML = Array.from({ length: dotCount }, (_, index) => {
+    const isActive = index === testimonialIndex;
+    return `<button type="button" class="carousel-dot${isActive ? ' active' : ''}" data-index="${index}" aria-label="Show testimonial ${index + 1}" aria-pressed="${isActive}"></button>`;
+  }).join('');
+
+  dotsWrap.querySelectorAll('.carousel-dot').forEach((button) => {
+    button.addEventListener('click', () => {
+      testimonialIndex = Number(button.dataset.index || 0);
+      renderTestimonials();
+      restartTestimonialInterval();
+    });
+  });
+}
+
+function nextTestimonials() {
+  testimonialIndex = (testimonialIndex + 1) % testimonials.length;
+  renderTestimonials();
+}
+
+function startTestimonialInterval() {
+  if (testimonialInterval || testimonials.length <= 1) return;
+  testimonialInterval = window.setInterval(nextTestimonials, 4000);
+}
+
+function restartTestimonialInterval() {
+  if (testimonialInterval) {
+    window.clearInterval(testimonialInterval);
+    testimonialInterval = null;
   }
-}
-
-function animateTo(nextPage) {
-  if (!carousel) return;
-  carousel.classList.remove('fade-in');
-  carousel.classList.add('fade-out');
-  setTimeout(() => {
-    currentPage = nextPage;
-    renderTestimonials();
-    carousel.classList.remove('fade-out');
-    carousel.classList.add('fade-in');
-  }, 180);
-}
-
-function nextSlide() {
-  animateTo((currentPage + 1) % totalPages);
-}
-
-function startRotation() {
-  clearInterval(timer);
-  timer = setInterval(nextSlide, 2800);
-}
-
-function stopRotation() {
-  clearInterval(timer);
+  startTestimonialInterval();
 }
 
 renderTestimonials();
-startRotation();
-
-dotsWrap?.addEventListener('click', (e) => {
-  const btn = e.target.closest('button[data-index]');
-  if (!btn) return;
-  animateTo(Number(btn.dataset.index));
-  stopRotation();
-  startRotation();
-});
-
-carousel?.addEventListener('mouseenter', stopRotation);
-carousel?.addEventListener('mouseleave', startRotation);
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    stopRotation();
-  } else {
-    startRotation();
-  }
-});
+startTestimonialInterval();
